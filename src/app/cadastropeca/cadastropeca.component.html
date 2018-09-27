@@ -1,0 +1,76 @@
+<section class="hero is-success is-fullheight">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        Cadastro de Peça
+      </h1>
+      <h2 class="subtitle">
+        Insira as informações abaixo para cadastrar uma peça
+      </h2>
+
+      <form [formGroup]="formPeca" (ngSubmit)="enviaForm()">
+        <div class="columns">
+          <div class="column is-three-quarters">
+            <div class="field">
+              <label class="label">Nome</label>
+              <div class="control">
+                <input class="input" type="text" formControlName="nome" required>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">Categoria</label>
+              <div class="control">
+                <div class="select">
+                  <select formControlName="categoria" required>
+                    <option value="">--Selecione uma opção--</option>
+                    <option>Processador</option>
+                  </select>
+                </div>
+                <button style="margin-top: 5px" class="button is-danger is-small is-rounded">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">Fornecedor</label>
+              <div class="control">
+                <input class="input" type="text" formControlName="fornecedor" required>
+              </div>
+            </div>
+          </div>
+          <div class="column is-one-quarter">
+            <div class="field">
+              <label class="label">Fabricante</label>
+              <div class="control">
+                <input class="input" type="text" formControlName="fabricante" required>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="columns ">
+          <div class="column is-one-fifth">
+            <div class="field">
+              <label class="label">Valor</label>
+              <div class="control">
+                <input class="input" type="number" formControlName="valor" required>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <button class="button is-link" type=submit>Salvar</button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+
+    </div>
+  </div>
+</section>
