@@ -30,8 +30,7 @@ export class CadastropecaComponent implements OnInit {
       categoria: ['', Validators.required],
       fornecedor: ['', Validators.required],
       fabricante: ['', Validators.required],
-      valor: ['', Validators.required],
-      data: new Date()
+      valor: ['', Validators.required]
     });
   }
 

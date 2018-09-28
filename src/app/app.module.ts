@@ -9,6 +9,7 @@ import { MenuComponent } from './menu/menu.component';
 import { CadastropecaComponent } from './cadastropeca/cadastropeca.component';
 import { OrcamentoComponent } from './orcamento/orcamento.component';
 import { HomeComponent } from './home/home.component';
+import { CrudService } from './servicos/crud.service';
 
 
 @NgModule({
@@ -24,7 +25,7 @@ import { HomeComponent } from './home/home.component';
     AppRoutingModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [CrudService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
