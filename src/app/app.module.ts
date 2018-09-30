@@ -4,12 +4,18 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { NgProgressModule, NgProgressBrowserXhr } from 'ngx-progressbar';
+import { BrowserXhr } from '@angular/http';
+
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
 import { CadastropecaComponent } from './cadastropeca/cadastropeca.component';
 import { OrcamentoComponent } from './orcamento/orcamento.component';
 import { HomeComponent } from './home/home.component';
 import { CrudService } from './servicos/crud.service';
+
+// Bibliotecas
+import { HttpClientModule } from '@angular/common/http'; 
 
 
 @NgModule({
@@ -23,9 +29,14 @@ import { CrudService } from './servicos/crud.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
+    NgProgressModule
   ],
-  providers: [CrudService],
+  providers: [
+  CrudService,
+  {provide: BrowserXhr, useClass: NgProgressBrowserXhr}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

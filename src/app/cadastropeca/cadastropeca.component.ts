@@ -1,13 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { CrudService } from './../servicos/crud.service';
+import { Peca } from './../compartilhados/peca';
 
-export interface Peca {
-  nome: string;
-  categoria: string;
-  fornecedor: string;
-  valor: number;
-  data: string;
-}
+import { NgProgress } from 'ngx-progressbar';
 
 @Component({
   selector: 'app-cadastropeca',
@@ -16,10 +12,15 @@ export interface Peca {
 })
 export class CadastropecaComponent implements OnInit {
 
-  constructor(public fb: FormBuilder) { }
+  constructor(public fb: FormBuilder, public crud: CrudService,
+    public ngProgress: NgProgress) { }
 
   formPeca: FormGroup;
-  peca;
+  peca: Peca;
+
+  error;
+  load: boolean = false;
+  msg: string = null;
   ngOnInit() {
     this.montaForm();
   }
@@ -30,13 +31,29 @@ export class CadastropecaComponent implements OnInit {
       categoria: ['', Validators.required],
       fornecedor: ['', Validators.required],
       fabricante: ['', Validators.required],
+      quantidade: ['', Validators.required],
       valor: ['', Validators.required]
     });
   }
 
   enviaForm() {
+    this.load = true;
     this.peca = this.formPeca.value;
     console.log('Formulario enviado: ' + JSON.stringify(this.peca));
+    this.ngProgress.start();
+    this.crud.criarRegistro(this.peca, '/pecas').subscribe((data) => {
+      console.log('Objeto criado: ' + JSON.stringify(data));
+      this.ngProgress.done();
+      this.msg = 'Peça criada com sucesso.';
+      this.load = false;
+    }, error => {
+      this.error = error;
+    });
+  }
+
+  fechaAviso() {
+    this.error = null;
+    this.msg = null;
   }
 
 }
