@@ -78,21 +78,21 @@
         </div>
         <!-- Terminar essa parte depois. -->
         <div class="columns">
-          <div *ngIf="load" [hidden]="msg || error" class="column">
-              <ng-progress></ng-progress>
-          </div>
           <div *ngIf="error" [hidden]="msg" class="column">
             <div class="notification is-danger">
               <button (click)="fechaAviso()" class="delete"></button>
               Nos desculpe. Não foi possível cadastrar a peça.
             </div>
           </div>
-          <div *ngIf="msg" class="column">
+          <div *ngIf="msg" [hidden]="error" class="column">
             <div class="notification is-primary">
               <button (click)="fechaAviso()" class="delete"></button>
               Peça cadastrada com sucesso.
             </div>
           </div>
+        </div>
+        <div *ngIf="load" [hidden]="msg || error" class="column">
+          <ng-progress></ng-progress>
         </div>
       </form>
     </div>

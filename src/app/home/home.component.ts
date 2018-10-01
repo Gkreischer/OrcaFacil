@@ -32,5 +32,12 @@ export class HomeComponent implements OnInit {
       this.erro = erro;
     });
   }
+  
+  deletaPeca(event) {
+    var target = event.target || event.srcElement || event.currentTarget;
+    var idAttr = target.attributes.id;
+    
+    console.log(idAttr.value);
+  }
 
 }

@@ -25,6 +25,18 @@ export class CrudService {
     );
   }
 
+  lerRegistroEspecifico(rota, id): Observable<any> {
+    return this.http.get(this.API_URL + rota + '/'+ id).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  deletaRegistro(rota, id): Observable<any> {
+    return this.http.delete(this.API_URL + rota + '/' + id).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   // Tratamento de erro
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
