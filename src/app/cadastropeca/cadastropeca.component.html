@@ -23,12 +23,16 @@
               <label class="label">Categoria</label>
               <div class="control">
                 <div class="select">
-                  <select formControlName="categoria" required>
+                  <select *ngIf="categorias" formControlName="categoria" required>
                     <option value="">--Selecione uma opção--</option>
-                    <option>Processador</option>
+                    <option [value]="categoria.categoria" *ngFor="let categoria of categorias">{{categoria.categoria | json}}</option>
                   </select>
                 </div>
-                <button style="margin-top: 5px" class="button is-danger is-small is-rounded">+</button>
+                <button type="button" style="margin-top: 5px" class="button is-danger is-small is-rounded" (click)="abreModal(true)">
+                  <span class="icon">
+                    <i class="fas fa-plus"></i>
+                  </span>
+                </button>
               </div>
             </div>
           </div>
@@ -95,6 +99,32 @@
           <ng-progress></ng-progress>
         </div>
       </form>
+
+      <div class="modal" [ngClass]="{'is-active' : modal === true}">
+        <div class="modal-background"></div>
+        <form [formGroup]="formCategoria" (ngSubmit)="registraCategoria()">
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">Adicionar categoria</p>
+              <button class="delete" aria-label="close" type="button" (click)="abreModal(false)"></button>
+            </header>
+            <section class="modal-card-body">
+
+              <div class="field">
+                <label class="label has-text-black">Categoria</label>
+                  <div class="control">
+                    <input class="input" type="text" formControlName="categoria" required>
+                  </div>
+              </div>
+
+            </section>
+            <footer class="modal-card-foot">
+              <button type="button" class="button is-success" [disabled]="!formCategoria.valid" (click)="registraCategoria()">Salvar</button>
+              <button type="button" (click)="abreModal(false)" class="button">Cancelar</button>
+            </footer>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </section>

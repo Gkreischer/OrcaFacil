@@ -18,12 +18,22 @@ export class CadastropecaComponent implements OnInit {
 
   id;
   formPeca: FormGroup;
+  formCategoria: FormGroup;
   peca: Peca;
+  categorias;
 
   error;
-  load;
+  modal: boolean = false;
+  load: boolean = false;
   msg: string = null;
   ngOnInit() {
+    this.ngProgress.start();
+    this.pegaIdRota();
+    this.leCategorias();
+    this.montaForm();
+  }
+
+  pegaIdRota(){
     this.route.params.subscribe((params) => {
       this.id = params.id;
       if(this.id != undefined){
@@ -34,9 +44,16 @@ export class CadastropecaComponent implements OnInit {
         }, error => this.error = error);
       }
     });
+  }
 
-    this.montaForm();
-    
+  leCategorias(){
+    this.crud.lerRegistro('/categorias').subscribe((categorias) => {
+      this.categorias = categorias;
+    }, error => {
+      this.error = error;
+      this.load = false;
+      this.ngProgress.done();
+    });
   }
 
   montaForm() {
@@ -48,18 +65,25 @@ export class CadastropecaComponent implements OnInit {
       quantidade: ['', Validators.required],
       valor: ['', Validators.required]
     });
+
+    this.formCategoria = this.fb.group({
+      categoria: ['', Validators.required]
+    });
   }
 
   enviaForm() {
     this.peca = this.formPeca.value;
     console.log('Formulario enviado: ' + JSON.stringify(this.peca));
     this.ngProgress.start();
-    this.crud.criarRegistro(this.peca, '/pecas').subscribe((data) => {
+    this.load = true;
+    this.crud.criarRegistro('/pecas', this.peca).subscribe((data) => {
       console.log('Objeto criado: ' + JSON.stringify(data));
+      this.load = false;
       this.ngProgress.done();
       this.msg = 'Peça criada com sucesso.';
     }, error => {
       this.error = error;
+      this.load = false;
       this.ngProgress.done();
     });
   }
@@ -67,6 +91,33 @@ export class CadastropecaComponent implements OnInit {
   fechaAviso() {
     this.error = null;
     this.msg = null;
+  }
+
+  registraCategoria() {
+    this.load = true
+    this.ngProgress.start();
+    this.crud.criarRegistro('/categorias', this.formCategoria.value).subscribe((data) => {
+      console.log('Categoria adicionada globalmente');
+      this.categorias.push(this.formCategoria.value);      
+      this.load = false;
+      this.ngProgress.done();
+      this.abreModal(false);
+    }, error => {
+      this.error = error;
+      this.load = false;
+      this.ngProgress.done();
+      this.abreModal(false);
+    });
+  }
+
+  abreModal(op: boolean) {
+    if(op){
+      this.modal = true;
+      console.log('Modal abrindo');
+    } else {
+      this.modal = false;
+      console.log('Modal fechando');
+    }
   }
 
 }

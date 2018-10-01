@@ -39,5 +39,9 @@
   "peca": {
     "dataSource": "MongoDB",
     "public": true
+  },
+  "categorias": {
+    "dataSource": "MongoDB",
+    "public": true
   }
 }

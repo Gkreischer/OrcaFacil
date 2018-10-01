@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse} from  '@angular/common/http';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
-
-
 
 
 @Injectable()
@@ -13,7 +11,7 @@ export class CrudService {
   API_URL: string = 'http://localhost:3000/api';
   constructor(public http: HttpClient) { }
 
-  criarRegistro(form, rota: string): Observable<any> {
+  criarRegistro(rota: string, form): Observable<any> {
     return this.http.put(this.API_URL + rota, form).pipe(
       catchError(this.handleError)
     );
@@ -21,6 +19,7 @@ export class CrudService {
 
   lerRegistro(rota): Observable<any> {
     return this.http.get(this.API_URL + rota).pipe(
+      tap(data => {return data}),
       catchError(this.handleError)
     );
   }
@@ -50,6 +49,6 @@ export class CrudService {
         `body era: ${JSON.stringify(error.error)}`);
     }
     // return an observable with a user-facing error message
-    return ErrorObservable.create('Nos desculpe. Tente novamente mais tarde,')
+    return ErrorObservable.create('Nos desculpe. Tente novamente mais tarde. (Você está conectado?)')
   };
 }
