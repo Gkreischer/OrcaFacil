@@ -50,6 +50,8 @@ export class CadastropecaComponent implements OnInit {
         }, error => {this.error = error, 
           this.ngProgress.done();
         });
+      }else {
+        this.montaForm();
       }
     });
   }
@@ -68,6 +70,8 @@ export class CadastropecaComponent implements OnInit {
     this.formCategoria = this.fb.group({
       categoria: ['', Validators.required]
     });
+
+    this.peca = this.formCategoria.value;
   }
 
   enviaForm() {
