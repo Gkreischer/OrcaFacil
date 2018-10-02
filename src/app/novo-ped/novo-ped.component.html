@@ -1,0 +1,109 @@
+<section class="hero is-link is-fullheight">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        Novo Pedido
+      </h1>
+      <h2 class="subtitle">
+        Aqui você pode registrar novos pedidos de aquisição para seu estoque
+      </h2>
+
+      <form *ngIf="pedido; else load" [formGroup]="formPedido" (ngSubmit)="enviaForm()">
+        <div class="columns">
+          <div class="column is-one-fifth">
+            <div class="field">
+              <label class="label">Data de solicitação:</label>
+              <div class="control">
+                <input class="input" type="text" formControlName="data" required readonly>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="pecas" class="columns">
+          <div class="column is-four-fifths">
+            <label class="label">Peça</label>
+            <div class="field has-addons">
+              <div class="control">
+                <div class="select">
+                  <select formControlName="peca" (click)="pegaId($event.target.value)" required>
+                    <option value="" disabled>--Selecione uma opção--</option>
+                    <option [value]="peca.id" *ngFor="let peca of pecas">{{peca.nome}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="control">
+                <a type="button" (click)="adicionaPecaLista()" class="button is-info" >
+                  Adicionar
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <!-- Aqui serão exibidos algumas coisas das peças, como nome, fornecedor, quantidade e etc. -->
+            <div class="card">
+              <header class="card-header">
+                <p class="card-header-title">
+                  Lista de peças
+                </p>
+              </header>
+              <div class="card-content">
+                <div class="columns">
+                  <div class="column">
+                    <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                      <thead>
+                        <tr>
+                          <th>Nome</th>
+                          <th>Categoria</th>
+                          <th>Valor</th>
+                          <th>Data de compra</th>
+                          <th>Ações</th>
+                        </tr>
+                      </thead>
+                      <tbody *ngFor="let lista of listaPecas">
+                        <td>{{lista.nome}}</td>
+                        <td>{{lista.categoria}}</td>
+                        <td class="has-text-centered">{{lista.valor}}</td>
+                        <td class="has-text-centered">{{lista.createdAt | date}}</td>
+                        <td class="has-text-centered">
+                          <button type="button" class="button is-small is-danger" id="{{lista.id}}" (click)="deletaPeca($event)">Excluir</button>
+                        </td>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <button [disabled]="!formPedido.valid" class="button is-success" type=submit>Salvar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div *ngIf="error" [hidden]="msg" class="column">
+            <div class="notification is-danger">
+              <button (click)="fechaAviso()" class="delete"></button>
+              Nos desculpe. Não foi possível cadastrar a peça.
+            </div>
+          </div>
+          <div *ngIf="msg" [hidden]="error" class="column">
+            <div class="notification is-primary">
+              <button (click)="fechaAviso()" class="delete"></button>
+              Peça cadastrada com sucesso.
+            </div>
+          </div>
+        </div>
+        <div *ngIf="load" [hidden]="msg || error" class="column">
+          <ng-progress></ng-progress>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

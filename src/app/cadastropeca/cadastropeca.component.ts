@@ -71,7 +71,7 @@ export class CadastropecaComponent implements OnInit {
       categoria: ['', Validators.required]
     });
 
-    this.peca = this.formCategoria.value;
+    this.peca = this.formPeca.value;
   }
 
   enviaForm() {

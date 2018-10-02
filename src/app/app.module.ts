@@ -12,10 +12,12 @@ import { MenuComponent } from './menu/menu.component';
 import { CadastropecaComponent } from './cadastropeca/cadastropeca.component';
 import { OrcamentoComponent } from './orcamento/orcamento.component';
 import { HomeComponent } from './home/home.component';
+import { NovoPedComponent } from './novo-ped/novo-ped.component'; 
 import { CrudService } from './servicos/crud.service';
 
 // Bibliotecas
-import { HttpClientModule } from '@angular/common/http'; 
+import { HttpClientModule } from '@angular/common/http';
+
 
 
 @NgModule({
@@ -24,7 +26,8 @@ import { HttpClientModule } from '@angular/common/http';
     MenuComponent,
     CadastropecaComponent,
     OrcamentoComponent,
-    HomeComponent
+    HomeComponent,
+    NovoPedComponent
   ],
   imports: [
     BrowserModule,
