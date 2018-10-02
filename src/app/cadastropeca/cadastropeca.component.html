@@ -8,7 +8,7 @@
         Insira as informações abaixo para cadastrar uma peça
       </h2>
 
-      <form [formGroup]="formPeca" (ngSubmit)="enviaForm()">
+      <form *ngIf="peca; else load" [formGroup]="formPeca" (ngSubmit)="enviaForm()">
         <div class="columns">
           <div class="column is-three-quarters">
             <div class="field">

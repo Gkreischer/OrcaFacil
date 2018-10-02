@@ -5,6 +5,8 @@ import { CrudService } from './../servicos/crud.service';
 import { Peca } from './../compartilhados/peca';
 
 import { NgProgress } from 'ngx-progressbar';
+import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-cadastropeca',
@@ -19,7 +21,7 @@ export class CadastropecaComponent implements OnInit {
   id;
   formPeca: FormGroup;
   formCategoria: FormGroup;
-  peca: Peca;
+  peca: Observable<Peca>;
   categorias;
 
   error;
@@ -27,35 +29,32 @@ export class CadastropecaComponent implements OnInit {
   load: boolean = false;
   msg: string = null;
   ngOnInit() {
-    this.ngProgress.start();
     this.pegaIdRota();
     this.leCategorias();
     this.montaForm();
   }
 
   pegaIdRota(){
+    // Verifica se tem ID na rota para atualização.
     this.route.params.subscribe((params) => {
       this.id = params.id;
+      this.ngProgress.start();
       if(this.id != undefined){
+        this.ngProgress.start();
         this.crud.lerRegistroEspecifico('/pecas', this.id).subscribe((data) => {
           console.log('Id recebido da: ' + params.id);
+          this.formPeca.patchValue(data);
           this.peca = data;
-          console.log(this.peca);
-        }, error => this.error = error);
+          console.log(data);
+          this.ngProgress.done();
+        }, error => {this.error = error, 
+          this.ngProgress.done();
+        });
       }
     });
   }
-
-  leCategorias(){
-    this.crud.lerRegistro('/categorias').subscribe((categorias) => {
-      this.categorias = categorias;
-    }, error => {
-      this.error = error;
-      this.load = false;
-      this.ngProgress.done();
-    });
-  }
-
+  
+  // Formulário
   montaForm() {
     this.formPeca = this.fb.group({
       nome: ['', Validators.required],
@@ -87,10 +86,16 @@ export class CadastropecaComponent implements OnInit {
       this.ngProgress.done();
     });
   }
-
-  fechaAviso() {
-    this.error = null;
-    this.msg = null;
+  
+  // Categorias
+  leCategorias(){
+    this.crud.lerRegistro('/categorias').subscribe((categorias) => {
+      this.categorias = categorias;
+    }, error => {
+      this.error = error;
+      this.load = false;
+      this.ngProgress.done();
+    });
   }
 
   registraCategoria() {
@@ -110,6 +115,7 @@ export class CadastropecaComponent implements OnInit {
     });
   }
 
+  // Controles de interface
   abreModal(op: boolean) {
     if(op){
       this.modal = true;
@@ -118,6 +124,11 @@ export class CadastropecaComponent implements OnInit {
       this.modal = false;
       console.log('Modal fechando');
     }
+  }
+  
+  fechaAviso() {
+    this.error = null;
+    this.msg = null;
   }
 
 }
