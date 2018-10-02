@@ -63,8 +63,7 @@ export class HomeComponent implements OnInit {
         
         console.log(idAttr.value);
         if(data.value == undefined){
-          this.listaPecas = null;
-          this.msg = 'Você não tem peças cadastradas';
+          this.verificaEstoque();
           this.load = false;
           this.ngProgress.done();
         }
