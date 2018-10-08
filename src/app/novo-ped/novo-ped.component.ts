@@ -15,11 +15,11 @@ import { Observable } from 'rxjs/Observable';
 })
 export class NovoPedComponent implements OnInit {
 
-  id: number = 0;
   formPedido: FormGroup;
   pedido: Peca[];
   categorias;
   listaPecas = [];
+  contador: number = 0;
 
   data;
   erro;
@@ -73,23 +73,20 @@ export class NovoPedComponent implements OnInit {
   }
   
   /* Pega id do elemento selecionando no select de Peça */
-  pegaId(event) {
-    // console.log(event);
-    if (event != undefined) {
-      this.id = event;
-    } else {
-      this.id = null;
-    }
-
-  }
+  
 
   adicionaPecaLista() {
 
-    if(this.pedido){
-      this.pedido = this.formPedido.value;
+    this.pedido = this.formPedido.value;
+
+    if(this.pedido != undefined){
+      this.contador += 1;
+      console.log(this.contador);
+      
       this.listaPecas.push(this.pedido);
+      let index = this.listaPecas.findIndex(posicao => posicao.nome == 'a4 6300');
+      console.log(index);
       // Continuar daqui....ao gerar os botões, está atualizando a ID, colocando todos os valores iguais.
-      this.id += 1;
     } else {
       console.log('Sem peça no formulario de adicionar');
     }
@@ -109,8 +106,6 @@ export class NovoPedComponent implements OnInit {
     } else {
       console.log('Objeto não excluido da lista');
     }
-
-
 
 
   }
