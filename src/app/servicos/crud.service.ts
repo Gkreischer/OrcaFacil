@@ -37,7 +37,7 @@ export class CrudService {
   }
 
   // Tratamento de erro
-  private handleError(error: HttpErrorResponse) {
+  handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('Um erro ocorreu', error.error.message);
@@ -51,4 +51,19 @@ export class CrudService {
     // return an observable with a user-facing error message
     return ErrorObservable.create('Nos desculpe. Tente novamente mais tarde. (Você está conectado?)')
   };
+
+  // Funções úteis ao CRUD
+  achaElemObj(obj, prop, elemento) {
+
+    for(let i = 0; i <= obj.length; i++){
+      if(obj[i][prop] === elemento) {
+        console.log('Elemento achado');
+        return i;
+      } else {
+        return null;
+      }
+    }
+    
+    
+  }
 }

@@ -8,7 +8,10 @@
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "mongodb": "mongod --dbpath=./backend/mongodb",
+    "loopback": "npm start --prefix ./backend/loopback",
+    "angular": "ng serve"
   },
   "private": true,
   "dependencies": {

@@ -15,13 +15,11 @@ import { Observable } from 'rxjs/Observable';
 })
 export class NovoPedComponent implements OnInit {
 
-  id;
+  id: number = 0;
   formPedido: FormGroup;
-  pecas: Observable<Peca>;
-  pedido: Observable<Pedido>;
+  pedido: Peca[];
   categorias;
-
-  listaPecas: Peca[] = [];
+  listaPecas = [];
 
   data;
   erro;
@@ -39,17 +37,21 @@ export class NovoPedComponent implements OnInit {
   montaForm() {
 
     this.data = new Date().toLocaleDateString('pt-br');
-    console.log(this.data);
+    // console.log(this.data);
 
     this.formPedido = this.fb.group({
+      nome: ['', Validators.required],
+      categoria: ['', Validators.required],
       data: [this.data, Validators.required],
-      peca: ['', Validators.required]
+      fornecedor: ['', Validators.required],
+      quantidade: ['', Validators.required],
+      valor: ['', Validators.required]
     });
 
     this.pedido = this.formPedido.value;
-    
-    this.verificaEstoque();
-    console.log(this.formPedido.value);
+
+    this.leCategorias();
+    // console.log(this.formPedido.value);
 
   }
 
@@ -59,32 +61,21 @@ export class NovoPedComponent implements OnInit {
     this.msg = null;
   }
 
-  verificaEstoque(){
-    this.load = true;
-    this.ngProgress.start();
-    this.crud.lerRegistro('/pecas').subscribe((data) => {
-      if(data.length === 0){
-        this.pecas = null;
-      } else {
-        this.pecas = data;
-        console.log(this.pecas);
-      }
-      console.log('Lista recebindo. Itens devem ser exibidos agora.');
-
-      this.load = false;
-      this.ngProgress.done();
-      
-    }, 
-    erro => {
-      this.erro = erro;
+  // Categorias
+  leCategorias(){
+    this.crud.lerRegistro('/categorias').subscribe((categorias) => {
+      this.categorias = categorias;
+    }, error => {
+      this.erro = error;
       this.load = false;
       this.ngProgress.done();
     });
   }
+  
   /* Pega id do elemento selecionando no select de Peça */
   pegaId(event) {
-    console.log(event);
-    if(event != undefined){
+    // console.log(event);
+    if (event != undefined) {
       this.id = event;
     } else {
       this.id = null;
@@ -92,40 +83,36 @@ export class NovoPedComponent implements OnInit {
 
   }
 
-  /* Recebe a id do objeto selecionado e executa a query, para depois adicionar na lista. */
   adicionaPecaLista() {
-    
-    this.ngProgress.start();
-    this.load = true;
-    if(this.id){
-      this.crud.lerRegistroEspecifico('/pecas', this.id).subscribe((data) => {
-        this.listaPecas.push(data);
-        this.ngProgress.done();
-        this.load = false;
-      }, error => {
-        this.erro = error;
-      });
-    }else {
-      console.log('Nao pode adicionar peça sem id');
+
+    if(this.pedido){
+      this.pedido = this.formPedido.value;
+      this.listaPecas.push(this.pedido);
+      // Continuar daqui....ao gerar os botões, está atualizando a ID, colocando todos os valores iguais.
+      this.id += 1;
+    } else {
+      console.log('Sem peça no formulario de adicionar');
     }
   }
 
   deletaPeca(event) {
+    
     let target = event.target || event.srcElement || event.currentTarget;
-    let idAttr = target.attributes.id;
+    let idAttr = target.attributes.id.value;
 
-    this.load = true;
-    this.ngProgress.start();    
     let confirma = window.confirm('Tem certeza que deseja deletar o produto? ');
 
-    if(confirma) {
-      console.log(this.listaPecas);
+    if (confirma) {
+     console.log(idAttr);
+      
+      
     } else {
       console.log('Objeto não excluido da lista');
     }
 
-    this.load = false;
-    this.ngProgress.done();
+
+
+
   }
 
 }
