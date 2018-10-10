@@ -38,7 +38,7 @@
               <input class="input" type="text" formControlName="quantidade" required>
             </div>
           </div>
-          <div class="column is-half">
+          <div class="column is-one-fifth">
             <div class="field">
               <label class="label">Valor:</label>
               <input class="input" type="text" formControlName="valor" required>
@@ -88,7 +88,7 @@
                           <th>Fornecedor</th>
                           <th>Valor</th>
                           <th>Data de compra</th>
-                          <th>Ações</th>
+                          <th class="has-text-centered">Ações</th>
                         </tr>
                       </thead>
                       <tbody *ngFor="let lista of listaPecas">
@@ -98,7 +98,7 @@
                         <td class="has-text-centered">{{lista.valor}}</td>
                         <td class="has-text-centered">{{lista.data | date}}</td>
                         <td class="has-text-centered">
-                          <button type="button" class="button is-small is-danger" (click)="deletaPeca($event)">Excluir</button>
+                          <button type="button" class="button is-small is-danger" (click)="deletaPeca($event)">Remover</button>
                         </td>
                       </tbody>
                     </table>

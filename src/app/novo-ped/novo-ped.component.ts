@@ -112,15 +112,11 @@ export class NovoPedComponent implements OnInit {
 
   deletaPeca(event) {
 
-    let target = event.target || event.srcElement || event.currentTarget;
-
     let confirma = window.confirm('Tem certeza que deseja deletar o produto? ');
     
     if (confirma) {
       console.log('Exclusão confirmada');
-      
 
-      
     } else {
       console.log('Objeto não excluido da lista');
     }
