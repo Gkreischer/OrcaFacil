@@ -17,9 +17,10 @@ export class NovoPedComponent implements OnInit {
 
   formPedido: FormGroup;
   pedido: Peca[];
+  
+  formCategoria: FormGroup;
   categorias;
   listaPecas = [];
-  contador: number = 0;
 
   data;
   erro;
@@ -31,6 +32,7 @@ export class NovoPedComponent implements OnInit {
 
   ngOnInit() {
     this.montaForm();
+    this.leCategorias();
   }
 
   // Formulário
@@ -48,17 +50,14 @@ export class NovoPedComponent implements OnInit {
       valor: ['', Validators.required]
     });
 
+    this.formCategoria = this.fb.group({
+      categoria: ['', Validators.required]
+    });
+
     this.pedido = this.formPedido.value;
 
     this.leCategorias();
     // console.log(this.formPedido.value);
-
-  }
-
-  // Controles de interface
-  fechaAviso() {
-    this.erro = null;
-    this.msg = null;
   }
 
   // Categorias
@@ -71,21 +70,40 @@ export class NovoPedComponent implements OnInit {
       this.ngProgress.done();
     });
   }
-  
-  /* Pega id do elemento selecionando no select de Peça */
-  
 
+  registraCategoria() {
+    this.load = true
+    this.ngProgress.start();
+    this.crud.criarRegistro('/categorias', this.formCategoria.value).subscribe((data) => {
+      console.log('Categoria adicionada globalmente');
+      this.categorias.push(this.formCategoria.value);      
+      this.load = false;
+      this.ngProgress.done();
+      this.abreModal(false);
+    }, error => {
+      this.erro = error;
+      this.load = false;
+      this.ngProgress.done();
+      this.abreModal(false);
+    });
+  }
+  
   adicionaPecaLista() {
 
     this.pedido = this.formPedido.value;
 
+    for(let i = 0; i < this.listaPecas.length; i++){
+      if(this.listaPecas[i] === this.pedido){
+        alert('Objeto já adicionado');
+        return false;
+      }
+    }
+
     if(this.pedido != undefined){
-      this.contador += 1;
-      console.log(this.contador);
       
       this.listaPecas.push(this.pedido);
-      let index = this.listaPecas.findIndex(posicao => posicao.nome == 'a4 6300');
-      console.log(index);
+      console.table(this.listaPecas);
+      //let index = this.listaPecas.findIndex(posicao => posicao.nome == 'a4 6300');
       // Continuar daqui....ao gerar os botões, está atualizando a ID, colocando todos os valores iguais.
     } else {
       console.log('Sem peça no formulario de adicionar');
@@ -93,21 +111,32 @@ export class NovoPedComponent implements OnInit {
   }
 
   deletaPeca(event) {
-    
+
     let target = event.target || event.srcElement || event.currentTarget;
-    let idAttr = target.attributes.id.value;
 
     let confirma = window.confirm('Tem certeza que deseja deletar o produto? ');
-
+    
     if (confirma) {
-     console.log(idAttr);
+      console.log('Exclusão confirmada');
       
+
       
     } else {
       console.log('Objeto não excluido da lista');
     }
 
 
+  }
+
+  // Controles de interface
+  abreModal(op: boolean) {
+    if(op){
+      this.modal = true;
+      console.log('Modal abrindo');
+    } else {
+      this.modal = false;
+      console.log('Modal fechando');
+    }
   }
 
 }

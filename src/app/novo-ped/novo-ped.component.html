@@ -24,12 +24,30 @@
               <input class="input" type="text" formControlName="nome" required>
             </div>
           </div>
-        </div>
-        <div *ngIf="categorias" class="columns">
-          <div class="column is-one-fifth">
-            <label class="label">Categoria</label>
+          <div class="column">
             <div class="field">
-              <div class="control">
+              <label class="label">Fornecedor:</label>
+              <input class="input" type="text" formControlName="fornecedor" required>
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column is-one-fifth">
+            <div class="field">
+              <label class="label">Quantidade:</label>
+              <input class="input" type="text" formControlName="quantidade" required>
+            </div>
+          </div>
+          <div class="column is-half">
+            <div class="field">
+              <label class="label">Valor:</label>
+              <input class="input" type="text" formControlName="valor" required>
+            </div>
+          </div>
+          <div *ngIf="categorias" class="column is-one-fifth">
+            <label class="label">Categoria</label>
+            <div class="field has-addons">
+              <div class="control is-expanded">
                 <div class="select">
                   <select formControlName="categoria" required>
                     <option value="" disabled>--Selecione uma opção--</option>
@@ -37,24 +55,9 @@
                   </select>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="column">
-            <div class="field">
-              <label class="label">Fornecedor:</label>
-              <input class="input" type="text" formControlName="fornecedor" required>
-            </div>
-          </div>
-          <div class="column">
-            <div class="field">
-              <label class="label">Quantidade:</label>
-              <input class="input" type="text" formControlName="quantidade" required>
-            </div>
-          </div>
-          <div class="column">
-            <div class="field">
-              <label class="label">Valor:</label>
-              <input class="input" type="text" formControlName="valor" required>
+              <div class="control">
+                <button type="submit" class="button is-primary" (click)="abreModal(true)">Adicionar</button>
+              </div>
             </div>
           </div>
         </div>
@@ -82,6 +85,7 @@
                         <tr>
                           <th>Nome</th>
                           <th>Categoria</th>
+                          <th>Fornecedor</th>
                           <th>Valor</th>
                           <th>Data de compra</th>
                           <th>Ações</th>
@@ -90,10 +94,11 @@
                       <tbody *ngFor="let lista of listaPecas">
                         <td>{{lista.nome}}</td>
                         <td>{{lista.categoria}}</td>
+                        <td>{{lista.fornecedor}}</td>
                         <td class="has-text-centered">{{lista.valor}}</td>
                         <td class="has-text-centered">{{lista.data | date}}</td>
                         <td class="has-text-centered">
-                          <button type="button" class="button is-small is-danger" [id]="contador" (click)="deletaPeca($event)">Excluir</button>
+                          <button type="button" class="button is-small is-danger" (click)="deletaPeca($event)">Excluir</button>
                         </td>
                       </tbody>
                     </table>
@@ -104,6 +109,7 @@
             </div>
           </div>
         </div>
+
         <div class="columns">
           <div class="column">
             <div class="field">
@@ -130,6 +136,31 @@
           <ng-progress></ng-progress>
         </div>
       </form>
+      <div class="modal" [ngClass]="{'is-active' : modal === true}">
+        <div class="modal-background"></div>
+        <form [formGroup]="formCategoria" (ngSubmit)="registraCategoria()">
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">Adicionar categoria</p>
+              <button class="delete" aria-label="close" type="button" (click)="abreModal(false)"></button>
+            </header>
+            <section class="modal-card-body">
+
+              <div class="field">
+                <label class="label has-text-black">Categoria</label>
+                  <div class="control">
+                    <input class="input" type="text" formControlName="categoria" required>
+                  </div>
+              </div>
+
+            </section>
+            <footer class="modal-card-foot">
+              <button type="button" class="button is-success" [disabled]="!formCategoria.valid" (click)="registraCategoria()">Salvar</button>
+              <button type="button" (click)="abreModal(false)" class="button">Cancelar</button>
+            </footer>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </section>
