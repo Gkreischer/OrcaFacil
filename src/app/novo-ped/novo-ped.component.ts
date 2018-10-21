@@ -16,11 +16,12 @@ import { Observable } from 'rxjs/Observable';
 export class NovoPedComponent implements OnInit {
 
   formPedido: FormGroup;
-  pedido: Peca[];
+  pedido;
   
   formCategoria: FormGroup;
   categorias;
-  listaPecas = [];
+  listaPecas: Pedido[] = [];
+  posicao = [];
 
   data;
   erro;
@@ -40,6 +41,7 @@ export class NovoPedComponent implements OnInit {
 
     this.data = new Date().toLocaleDateString('pt-br');
     // console.log(this.data);
+    
 
     this.formPedido = this.fb.group({
       nome: ['', Validators.required],
@@ -62,8 +64,10 @@ export class NovoPedComponent implements OnInit {
 
   // Categorias
   leCategorias(){
+    this.ngProgress.start();
     this.crud.lerRegistro('/categorias').subscribe((categorias) => {
       this.categorias = categorias;
+      this.ngProgress.done();
     }, error => {
       this.erro = error;
       this.load = false;
@@ -81,27 +85,52 @@ export class NovoPedComponent implements OnInit {
       this.ngProgress.done();
       this.abreModal(false);
     }, error => {
-      this.erro = error;
+      this.erro = error.status;
       this.load = false;
       this.ngProgress.done();
       this.abreModal(false);
     });
   }
+
+  verificaLista() {
+    this.ngProgress.start();
+    this.crud.lerRegistro('/pecasPed').subscribe((data) => {
+      this.listaPecas = data;
+      this.ngProgress.done();
+    },
+    error => {
+      this.erro = error;
+      this.ngProgress.done()
+    });
+  }
   
   adicionaPecaLista() {
-
+    
+    this.ngProgress.start();
     this.pedido = this.formPedido.value;
 
+// Verifica se a peça está na lista do pedido.
     for(let i = 0; i < this.listaPecas.length; i++){
       if(this.listaPecas[i] === this.pedido){
         alert('Objeto já adicionado');
+        this.ngProgress.done();
         return false;
+
       }
     }
 
     if(this.pedido != undefined){
+
       
-      this.listaPecas.push(this.pedido);
+      this.crud.criarRegistro('/pecasPed', this.pedido).subscribe((data) => {
+      
+        console.table(data);
+        this.listaPecas.push(data);
+      },
+      error => {
+        this.erro = error;
+        this.ngProgress.done();
+      });
       console.table(this.listaPecas);
       //let index = this.listaPecas.findIndex(posicao => posicao.nome == 'a4 6300');
       // Continuar daqui....ao gerar os botões, está atualizando a ID, colocando todos os valores iguais.
@@ -112,13 +141,31 @@ export class NovoPedComponent implements OnInit {
 
   deletaPeca(event) {
 
-    let confirma = window.confirm('Tem certeza que deseja deletar o produto? ');
-    
-    if (confirma) {
-      console.log('Exclusão confirmada');
+    let target = event.target || event.srcElement || event.currentTarget;
+    let idAttr = target.attributes.id;
+    console.log(target);
 
-    } else {
-      console.log('Objeto não excluido da lista');
+    this.ngProgress.start();    
+    let confirma = window.confirm('Tem certeza que deseja deletar o produto? ');
+
+    console.log(confirma);
+
+    if(confirma) {
+      this.crud.deletaRegistro('/pecasPed', idAttr.value).subscribe((data) => {
+        
+        console.log(idAttr.value);
+        if(data.value == undefined){
+          // Retorna a lista atualizada
+          this.verificaLista();
+          this.load = false;
+          this.ngProgress.done();
+        }
+        console.log('Lista atualizada');
+      }, erro => {
+        this.erro = erro;
+        this.load = false;
+        this.ngProgress.done();
+      });
     }
 
 

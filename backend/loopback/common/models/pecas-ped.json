@@ -1,0 +1,39 @@
+{
+  "name": "pecasPed",
+  "plural": "pecasPed",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "nome": {
+      "type": "string",
+      "required": true
+    },
+    "categoria": {
+      "type": "string",
+      "required": true
+    },
+    "data": {
+      "type": "string",
+      "required": true
+    },
+    "fornecedor": {
+      "type": "string",
+      "required": true
+    },
+    "quantidade": {
+      "type": "number",
+      "required": true
+    },
+    "valor": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

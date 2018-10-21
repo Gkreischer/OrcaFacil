@@ -43,5 +43,9 @@
   "categorias": {
     "dataSource": "MongoDB",
     "public": true
+  },
+  "pecasPed": {
+    "dataSource": "MongoDB",
+    "public": true
   }
 }

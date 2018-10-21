@@ -49,7 +49,7 @@ export class CrudService {
         `body era: ${JSON.stringify(error.error)}`);
     }
     // return an observable with a user-facing error message
-    return ErrorObservable.create('Nos desculpe. Tente novamente mais tarde. (Você está conectado?)')
+    return ErrorObservable.create(`${JSON.stringify(error.message)}`);
   };
 
   // Funções úteis ao CRUD
