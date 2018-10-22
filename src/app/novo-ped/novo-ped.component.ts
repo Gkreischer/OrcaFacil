@@ -17,7 +17,7 @@ export class NovoPedComponent implements OnInit {
 
   formPedido: FormGroup;
   pedido;
-  
+
   formCategoria: FormGroup;
   categorias;
   listaPecas: Pedido[] = [];
@@ -41,7 +41,7 @@ export class NovoPedComponent implements OnInit {
 
     this.data = new Date().toLocaleDateString('pt-br');
     // console.log(this.data);
-    
+
 
     this.formPedido = this.fb.group({
       nome: ['', Validators.required],
@@ -63,7 +63,7 @@ export class NovoPedComponent implements OnInit {
   }
 
   // Categorias
-  leCategorias(){
+  leCategorias() {
     this.ngProgress.start();
     this.crud.lerRegistro('/categorias').subscribe((categorias) => {
       this.categorias = categorias;
@@ -80,7 +80,7 @@ export class NovoPedComponent implements OnInit {
     this.ngProgress.start();
     this.crud.criarRegistro('/categorias', this.formCategoria.value).subscribe((data) => {
       console.log('Categoria adicionada globalmente');
-      this.categorias.push(this.formCategoria.value);      
+      this.categorias.push(this.formCategoria.value);
       this.load = false;
       this.ngProgress.done();
       this.abreModal(false);
@@ -98,20 +98,20 @@ export class NovoPedComponent implements OnInit {
       this.listaPecas = data;
       this.ngProgress.done();
     },
-    error => {
-      this.erro = error;
-      this.ngProgress.done()
-    });
+      error => {
+        this.erro = error;
+        this.ngProgress.done()
+      });
   }
-  
+
   adicionaPecaLista() {
-    
+
     this.ngProgress.start();
     this.pedido = this.formPedido.value;
 
-// Verifica se a peça está na lista do pedido.
-    for(let i = 0; i < this.listaPecas.length; i++){
-      if(this.listaPecas[i] === this.pedido){
+    // Verifica se a peça está na lista do pedido.
+    for (let i = 0; i < this.listaPecas.length; i++) {
+      if (this.listaPecas[i] === this.pedido) {
         alert('Objeto já adicionado');
         this.ngProgress.done();
         return false;
@@ -119,18 +119,18 @@ export class NovoPedComponent implements OnInit {
       }
     }
 
-    if(this.pedido != undefined){
+    if (this.pedido != undefined) {
 
-      
+
       this.crud.criarRegistro('/pecasPed', this.pedido).subscribe((data) => {
-      
+
         console.table(data);
         this.listaPecas.push(data);
       },
-      error => {
-        this.erro = error;
-        this.ngProgress.done();
-      });
+        error => {
+          this.erro = error;
+          this.ngProgress.done();
+        });
       console.table(this.listaPecas);
       //let index = this.listaPecas.findIndex(posicao => posicao.nome == 'a4 6300');
       // Continuar daqui....ao gerar os botões, está atualizando a ID, colocando todos os valores iguais.
@@ -145,22 +145,25 @@ export class NovoPedComponent implements OnInit {
     let idAttr = target.attributes.id;
     console.log(target);
 
-    this.ngProgress.start();    
+    this.ngProgress.start();
     let confirma = window.confirm('Tem certeza que deseja deletar o produto? ');
 
     console.log(confirma);
 
-    if(confirma) {
+    if (confirma) {
       this.crud.deletaRegistro('/pecasPed', idAttr.value).subscribe((data) => {
-        
+
         console.log(idAttr.value);
-        if(data.value == undefined){
-          // Retorna a lista atualizada
-          this.verificaLista();
-          this.load = false;
-          this.ngProgress.done();
+        // Remove o objeto do array listapecas
+        this.ngProgress.start();
+        for(let i = 0; i < this.listaPecas.length; i++){
+          if(this.listaPecas[i].id === idAttr.value){
+            this.listaPecas.splice(i,1);
+          }
         }
+        this.ngProgress.done();
         console.log('Lista atualizada');
+        console.log(this.listaPecas);
       }, erro => {
         this.erro = erro;
         this.load = false;
@@ -173,7 +176,7 @@ export class NovoPedComponent implements OnInit {
 
   // Controles de interface
   abreModal(op: boolean) {
-    if(op){
+    if (op) {
       this.modal = true;
       console.log('Modal abrindo');
     } else {
