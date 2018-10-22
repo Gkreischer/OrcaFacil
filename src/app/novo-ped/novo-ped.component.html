@@ -91,7 +91,7 @@
                           <th class="has-text-centered">Ações</th>
                         </tr>
                       </thead>
-                      <tbody *ngFor="let lista of listaPecas">
+                      <tbody *ngFor="let lista of listaPecas" #conteudo>
                         <td>{{lista.nome}}</td>
                         <td>{{lista.categoria}}</td>
                         <td>{{lista.fornecedor}}</td>
@@ -113,7 +113,7 @@
         <div class="columns">
           <div class="column">
             <div class="field">
-              <button [disabled]="listaPecas.length != 0" class="button is-success" type=submit>Salvar</button>
+              <button [disabled]="!listaPecas.length != 0" class="button is-success" (click)="downloadPDF()" type=button>Salvar</button>
             </div>
           </div>
         </div>

@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from "@angular/router";
 import { CrudService } from './../servicos/crud.service';
 import { Peca } from './../compartilhados/peca';
 import { Pedido } from './../compartilhados/pedido';
+import * as jsPDF from 'jspdf';
 
 import { NgProgress } from 'ngx-progressbar';
 import { tap } from 'rxjs/operators';
@@ -21,7 +22,7 @@ export class NovoPedComponent implements OnInit {
   formCategoria: FormGroup;
   categorias;
   listaPecas: Pedido[] = [];
-  posicao = [];
+  @ViewChild('conteudo') conteudo: ElementRef;
 
   data;
   erro;
@@ -170,7 +171,35 @@ export class NovoPedComponent implements OnInit {
         this.ngProgress.done();
       });
     }
+  }
 
+  downloadPDF() {
+
+    let doc = new  jsPDF();
+
+    let specialElementHandlers = {
+      '#editor': function(element, renderer){
+        return true;
+      }
+    }
+
+    doc.text('Peças solicitadas na tabela abaixo', 20, 30);
+
+    let conteudo = this.conteudo.nativeElement;
+
+    doc.fromHTML(conteudo.innerHTML, 20, 50, {
+      'width': 190,
+      'elementHandlers': specialElementHandlers
+    });
+
+    
+    doc.setProperties({
+      title: 'OrcaFacil',
+      subject: 'Pedido',
+      author: 'OrcaFacil'
+     });
+
+     doc.save('Test.pdf');
 
   }
 
