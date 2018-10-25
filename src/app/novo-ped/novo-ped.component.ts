@@ -4,7 +4,9 @@ import { ActivatedRoute } from "@angular/router";
 import { CrudService } from './../servicos/crud.service';
 import { Peca } from './../compartilhados/peca';
 import { Pedido } from './../compartilhados/pedido';
-import * as jsPDF from 'jspdf';
+
+declare var jsPDF: any; // Important
+import html2canvas from 'html2canvas';
 
 import { NgProgress } from 'ngx-progressbar';
 import { tap } from 'rxjs/operators';
@@ -122,11 +124,11 @@ export class NovoPedComponent implements OnInit {
 
     if (this.pedido != undefined) {
 
-
       this.crud.criarRegistro('/pecasPed', this.pedido).subscribe((data) => {
 
         console.table(data);
         this.listaPecas.push(data);
+        this.ngProgress.done();
       },
         error => {
           this.erro = error;
@@ -156,7 +158,6 @@ export class NovoPedComponent implements OnInit {
 
         console.log(idAttr.value);
         // Remove o objeto do array listapecas
-        this.ngProgress.start();
         for(let i = 0; i < this.listaPecas.length; i++){
           if(this.listaPecas[i].id === idAttr.value){
             this.listaPecas.splice(i,1);
@@ -177,31 +178,28 @@ export class NovoPedComponent implements OnInit {
 
     let doc = new  jsPDF();
 
-    let specialElementHandlers = {
-      '#editor': function(element, renderer){
-        return true;
+    // Devemos fazer uma abstração para quebrar as colunas e linhas dentro do array listaPecas
+    let columns = [ {title: "ID", dataKey: "id"},{title: "Name", dataKey: "name"},{title: "Country", dataKey: "country"} ];
+    let rows = [ {"id": 1, "name": "Shaw", "country": "Tanzania",} ];
+
+    console.table(this.listaPecas.values);
+    doc.autoTable(columns, rows, {
+      styles: {fillColor: [25, 255, 255]},
+      columnStyles: {
+        id: {fillColor: 255}
+      },
+      margin: {top: 60},
+      addPageContent: function(data) {
+        doc.text("Header", 40, 30);
       }
-    }
-
-    doc.text('Peças solicitadas na tabela abaixo', 20, 30);
-
-    let conteudo = this.conteudo.nativeElement;
-
-    doc.fromHTML(conteudo.innerHTML, 20, 50, {
-      'width': 190,
-      'elementHandlers': specialElementHandlers
-    });
+  });
+  doc.save('table.pdf');
 
     
-    doc.setProperties({
-      title: 'OrcaFacil',
-      subject: 'Pedido',
-      author: 'OrcaFacil'
-     });
 
-     doc.save('Test.pdf');
-
+    
   }
+
 
   // Controles de interface
   abreModal(op: boolean) {

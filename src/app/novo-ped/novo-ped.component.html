@@ -80,28 +80,30 @@
               <div class="card-content">
                 <div class="columns">
                   <div class="column">
-                    <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
-                      <thead>
-                        <tr>
-                          <th>Nome</th>
-                          <th>Categoria</th>
-                          <th>Fornecedor</th>
-                          <th>Quantidade</th>
-                          <th>Valor</th>
-                          <th class="has-text-centered">Ações</th>
-                        </tr>
-                      </thead>
-                      <tbody *ngFor="let lista of listaPecas" #conteudo>
-                        <td>{{lista.nome}}</td>
-                        <td>{{lista.categoria}}</td>
-                        <td>{{lista.fornecedor}}</td>
-                        <td class="has-text-centered">{{lista.quantidade}}</td>
-                        <td class="has-text-centered">{{lista.valor}}</td>
-                        <td class="has-text-centered">
-                          <button type="button" class="button is-small is-danger" id="{{lista.id}}" (click)="deletaPeca($event)">Remover</button>
-                        </td>
-                      </tbody>
-                    </table>
+                    <div #conteudo>
+                      <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                        <thead>
+                          <tr>
+                            <th>Nome</th>
+                            <th>Categoria</th>
+                            <th>Fornecedor</th>
+                            <th>Quantidade</th>
+                            <th>Valor</th>
+                            <th class="has-text-centered">Ações</th>
+                          </tr>
+                        </thead>
+                        <tbody *ngFor="let lista of listaPecas" >
+                          <td>{{lista.nome}}</td>
+                          <td>{{lista.categoria}}</td>
+                          <td>{{lista.fornecedor}}</td>
+                          <td class="has-text-centered">{{lista.quantidade}}</td>
+                          <td class="has-text-centered">{{lista.valor}}</td>
+                          <td class="has-text-centered">
+                            <button type="button" class="button is-small is-danger" id="{{lista.id}}" (click)="deletaPeca($event)">Remover</button>
+                          </td>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -119,7 +121,7 @@
         </div>
 
         <div class="columns">
-          <div *ngIf="erro" [hidden]="msg" class="column">
+          <div *ngIf="erro" [hidden]="msg || listapecas" class="column">
             <div class="notification is-danger">
               <button (click)="fechaAviso()" class="delete"></button>
               Nos desculpe. Não foi possível cadastrar a peça. Motivo: {{erro}}
