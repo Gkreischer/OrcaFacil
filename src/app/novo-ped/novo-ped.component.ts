@@ -178,26 +178,38 @@ export class NovoPedComponent implements OnInit {
 
     let doc = new  jsPDF();
 
-    // Devemos fazer uma abstração para quebrar as colunas e linhas dentro do array listaPecas
-    let columns = [ {title: "ID", dataKey: "id"},{title: "Name", dataKey: "name"},{title: "Country", dataKey: "country"} ];
-    let rows = [ {"id": 1, "name": "Shaw", "country": "Tanzania",} ];
+    // Eu sei que tem que melhorar essa parte, mas farei depois. No momento, me serve.
+    let columns = [ 
+                    {title: "ID", dataKey: "id"},
+                    {title: "Nome", dataKey: "nome"},
+                    {title: "Categoria", dataKey: "categoria"},
+                    {title: "Fornecedor", dataKey: "fornecedor"}, 
+                    {title: "Quantidade", dataKey: "quantidade"},
+                    {title: "Valor", dataKey: "valor"} 
+                  ];
+    let rows = this.pegaValoresObjListaPecas();
 
-    console.table(this.listaPecas.values);
     doc.autoTable(columns, rows, {
-      styles: {fillColor: [25, 255, 255]},
-      columnStyles: {
-        id: {fillColor: 255}
-      },
+      styles: {fillColor: [30, 144, 255]},
+      bodyStyles: {fillColor: [211,211,211]},
       margin: {top: 60},
       addPageContent: function(data) {
-        doc.text("Header", 40, 30);
+        doc.text("Pedido número: ", 30, 30);
       }
   });
-  doc.save('table.pdf');
+  doc.save('table.pdf');  
+  }
 
-    
+  pegaValoresObjListaPecas(){
+    console.log('Quebrando obj em array');
 
-    
+    let entradaObj = this.listaPecas;
+    let linhas = [];
+
+    entradaObj.forEach((data) => {
+      linhas.push(data);
+    });
+    return linhas;
   }
 
 
