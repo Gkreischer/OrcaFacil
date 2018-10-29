@@ -47,5 +47,9 @@
   "pecasPed": {
     "dataSource": "MongoDB",
     "public": true
+  },
+  "infoempresa": {
+    "dataSource": "MongoDB",
+    "public": true
   }
 }

@@ -192,7 +192,7 @@ export class NovoPedComponent implements OnInit {
                     {title: "Valor", dataKey: "valor"} 
                   ];
     let rows = this.listaPecas;
-
+    
     this.impressao.criaDocument(rows);
 
     this.ngProgress.done();

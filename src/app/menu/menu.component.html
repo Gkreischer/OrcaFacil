@@ -4,7 +4,8 @@
       <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112"
         height="28">
     </a>
-    <a role="button" class="navbar-burger burger" [ngClass]="{'is-active' : chaveMenu === true}" aria-label="menu" aria-expanded="false" data-target="navbarLinks" (click)="exibeMenu()">
+    <a role="button" class="navbar-burger burger" [ngClass]="{'is-active' : chaveMenu === true}" aria-label="menu"
+      aria-expanded="false" data-target="navbarLinks" (click)="exibeMenu()">
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
@@ -13,31 +14,31 @@
 
   <div id="navbarLinks" class="navbar-menu" [ngClass]="{'is-active' : chaveMenu === true}">
     <div class="navbar-start">
-      <a class="navbar-item" routerLink="/home">
+      <a class="navbar-item" routerLink="/home" routerLinkActive="is-active">
         Home
       </a>
       <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link" >
+        <a class="navbar-link">
           Pedido
         </a>
         <div class="navbar-dropdown is-boxed">
-          <a class="navbar-item" routerLink="/novoPed">
+          <a class="navbar-item" routerLink="/novoPed" routerLinkActive="is-active">
             Novo
           </a>
-          <a class="navbar-item" routerLink="/historicoPed">
+          <a class="navbar-item" routerLink="/historicoPed" routerLinkActive="is-active">
             Histórico
           </a>
         </div>
       </div>
       <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link" >
+        <a class="navbar-link">
           Orçamento
         </a>
         <div class="navbar-dropdown is-boxed">
-          <a class="navbar-item" routerLink="/novoOrc">
+          <a class="navbar-item" routerLink="/novoOrc" routerLinkActive="is-active">
             Novo
           </a>
-          <a class="navbar-item" routerLink="/historicoOrc">
+          <a class="navbar-item" routerLink="/historicoOrc" routerLinkActive="is-active">
             Histórico
           </a>
         </div>
@@ -47,11 +48,14 @@
           Peça
         </a>
         <div class="navbar-dropdown is-boxed">
-          <a class="navbar-item" routerLink="/cadastropeca">
+          <a class="navbar-item" routerLink="/cadastropeca" routerLinkActive="is-active">
             Cadastro
           </a>
         </div>
       </div>
+      <a class="navbar-item" routerLink="/configuracao" routerLinkActive="is-active">
+        Configuracao
+      </a>
     </div>
   </div>
 </nav>

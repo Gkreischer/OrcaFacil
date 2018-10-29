@@ -17,6 +17,7 @@ import { CrudService } from './servicos/crud.service';
 import { ImpressaoService } from './servicos/impressao.service';
 // Bibliotecas
 import { HttpClientModule } from '@angular/common/http';
+import { ConfiguracaoComponent } from './configuracao/configuracao.component';
 
 
 
@@ -27,7 +28,8 @@ import { HttpClientModule } from '@angular/common/http';
     CadastropecaComponent,
     OrcamentoComponent,
     HomeComponent,
-    NovoPedComponent
+    NovoPedComponent,
+    ConfiguracaoComponent
   ],
   imports: [
     BrowserModule,

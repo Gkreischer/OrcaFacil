@@ -1,0 +1,34 @@
+{
+  "name": "infoempresa",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "nome": {
+      "type": "string",
+      "default": "Nome da Empresa"
+    },
+    "telefone": {
+      "type": "string",
+      "default": "Telefone da Empresa"
+    },
+    "endereco": {
+      "type": "string",
+      "default": "Endereco da Empresa"
+    },
+    "email": {
+      "type": "string",
+      "default": "Email da Empresa"
+    },
+    "site": {
+      "type": "string",
+      "default": "Site da Empresa"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

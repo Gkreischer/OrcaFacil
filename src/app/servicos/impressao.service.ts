@@ -2,8 +2,11 @@ import { Injectable } from '@angular/core';
 import * as pdfmake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { catchError } from 'rxjs/operators';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+
+import { InfoEmpresa } from './../compartilhados/infoEmpresa';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ImpressaoService {
@@ -11,7 +14,17 @@ export class ImpressaoService {
   private readonly pdfFonts: any;
   pdfMake: any;
 
-  constructor() {
+  API_URL: string = 'http://localhost:3000/api';
+  dadosEmpresa;
+  
+  constructor(private http: HttpClient) {
+    this.retornaInfEmpresa().subscribe((data) => {
+      this.dadosEmpresa = data[0];
+      if(this.dadosEmpresa == undefined){
+        alert('Cadastre suas informações primeiro em Configurações');
+      }
+      console.log(this.dadosEmpresa);
+    })
 
   }
 
@@ -22,10 +35,10 @@ export class ImpressaoService {
 
       pageSize: 'A4',
       content: [
-        { text: 'Sigatec Informática', style: 'nomedaEmpresa' },
-        { text: 'Av. Amazonas, 49 - Loja 12', style: 'informacoesEmpresa' },
-        { text: 'Telefone: (22) 2764 - 3285', style: 'informacoesEmpresa' },
-        { text: 'www.sigatecinformatica.com.br', style: 'informacoesEmpresa', margin: [0, 0, 0, 50] },
+        { text: this.dadosEmpresa.nome, style: 'nomedaEmpresa' },
+        { text: this.dadosEmpresa.telefone, style: 'informacoesEmpresa' },
+        { text: this.dadosEmpresa.endereco, style: 'informacoesEmpresa' },
+        { text: this.dadosEmpresa.site, style: 'informacoesEmpresa', margin: [0, 0, 0, 50] },
         // A categoria deve ter exatamente o mesmo nome das propriedades do objeto. Elas serão as colunas
         { table: this.table(docRecebido, ['nome', 'categoria', 'fornecedor', 'quantidade', 'valor']) }
         
@@ -79,6 +92,13 @@ export class ImpressaoService {
     };
   }
 
+
+  //Informações empresa
+  retornaInfEmpresa(): Observable<InfoEmpresa> {
+    return this.http.get(this.API_URL + '/infoempresas').pipe(
+      catchError(this.handleError)
+    );
+  }
 
   
   // Tratamento de erro
