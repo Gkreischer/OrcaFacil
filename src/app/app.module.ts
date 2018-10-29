@@ -14,7 +14,7 @@ import { OrcamentoComponent } from './orcamento/orcamento.component';
 import { HomeComponent } from './home/home.component';
 import { NovoPedComponent } from './novo-ped/novo-ped.component'; 
 import { CrudService } from './servicos/crud.service';
-
+import { ImpressaoService } from './servicos/impressao.service';
 // Bibliotecas
 import { HttpClientModule } from '@angular/common/http';
 
@@ -38,6 +38,7 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   providers: [
   CrudService,
+  ImpressaoService,
   {provide: BrowserXhr, useClass: NgProgressBrowserXhr}
   ],
   bootstrap: [AppComponent]

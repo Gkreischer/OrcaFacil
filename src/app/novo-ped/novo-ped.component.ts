@@ -2,10 +2,12 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from "@angular/router";
 import { CrudService } from './../servicos/crud.service';
+import { ImpressaoService } from './../servicos/impressao.service';
 import { Peca } from './../compartilhados/peca';
 import { Pedido } from './../compartilhados/pedido';
 
-declare var jsPDF: any; // Important
+
+
 import html2canvas from 'html2canvas';
 
 import { NgProgress } from 'ngx-progressbar';
@@ -32,7 +34,8 @@ export class NovoPedComponent implements OnInit {
   load: boolean = false;
   msg: string = null;
   constructor(public fb: FormBuilder, public crud: CrudService,
-    public ngProgress: NgProgress, private route: ActivatedRoute) { }
+    public ngProgress: NgProgress, private route: ActivatedRoute,
+    public impressao: ImpressaoService) { }
 
   ngOnInit() {
     this.montaForm();
@@ -176,8 +179,9 @@ export class NovoPedComponent implements OnInit {
 
   downloadPDF() {
 
-    let doc = new  jsPDF();
+    this.ngProgress.start();
 
+    
     // Eu sei que tem que melhorar essa parte, mas farei depois. No momento, me serve.
     let columns = [ 
                     {title: "ID", dataKey: "id"},
@@ -187,30 +191,14 @@ export class NovoPedComponent implements OnInit {
                     {title: "Quantidade", dataKey: "quantidade"},
                     {title: "Valor", dataKey: "valor"} 
                   ];
-    let rows = this.pegaValoresObjListaPecas();
+    let rows = this.listaPecas;
 
-    doc.autoTable(columns, rows, {
-      styles: {fillColor: [30, 144, 255]},
-      bodyStyles: {fillColor: [211,211,211]},
-      margin: {top: 60},
-      addPageContent: function(data) {
-        doc.text("Pedido número: ", 30, 30);
-      }
-  });
-  doc.save('table.pdf');  
+    this.impressao.criaDocument(rows);
+
+    this.ngProgress.done();
+
   }
 
-  pegaValoresObjListaPecas(){
-    console.log('Quebrando obj em array');
-
-    let entradaObj = this.listaPecas;
-    let linhas = [];
-
-    entradaObj.forEach((data) => {
-      linhas.push(data);
-    });
-    return linhas;
-  }
 
 
   // Controles de interface
