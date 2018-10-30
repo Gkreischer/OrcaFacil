@@ -1,3 +1,44 @@
-<p>
-  configuracao works!
-</p>
+<section class="hero fundo_configuracao is-fullheight">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns">
+        <div class="column">
+          <h1 class="title">
+            Configurações
+          </h1>
+          <h2 class="subtitle">
+            Somente altere algo mediante conhecimento técnico.
+          </h2>
+        </div>
+        <div class="column">
+          <div class="card">
+            <div class="card-header">
+              <p class="card-header-title">
+                Dados do Usuário
+              </p>
+            </div>
+            <div class="card-content">
+              <form [formGroup]="formConfig" (ngSubmit)="enviaForm()">
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Nome da empresa:</label>
+                      <input class="input" type="text" formControlName="nomeEmpresa" required>
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Telefone:</label>
+                      <input class="input" type="text" formControlName="telEmpresa" required>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

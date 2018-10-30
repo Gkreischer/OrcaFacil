@@ -28,6 +28,12 @@ export class ImpressaoService {
 
   }
 
+  retornaInfEmpresa(): Observable<InfoEmpresa> {
+    return this.http.get(this.API_URL + '/infoempresas').pipe(
+      catchError(this.handleError)
+    );
+  }
+
   criaDocument(documento) {
     let docRecebido = documento;
 
@@ -90,14 +96,6 @@ export class ImpressaoService {
         widths: ['*', '*', '*', '*', '*'],
         body: this.buildTableBody(data, columns)
     };
-  }
-
-
-  //Informações empresa
-  retornaInfEmpresa(): Observable<InfoEmpresa> {
-    return this.http.get(this.API_URL + '/infoempresas').pipe(
-      catchError(this.handleError)
-    );
   }
 
   
