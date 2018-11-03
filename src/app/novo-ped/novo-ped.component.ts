@@ -42,7 +42,6 @@ export class NovoPedComponent implements OnInit {
     this.leCategorias();
   }
 
-  // Formulário
   montaForm() {
 
     this.data = new Date().toLocaleDateString('pt-br');
@@ -193,7 +192,7 @@ export class NovoPedComponent implements OnInit {
                   ];
     let rows = this.listaPecas;
     
-    this.impressao.criaDocument(rows);
+    this.impressao.criaDocumentTable(rows);
 
     this.ngProgress.done();
 

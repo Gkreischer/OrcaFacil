@@ -7,14 +7,14 @@
             Configurações
           </h1>
           <h2 class="subtitle">
-            Somente altere algo mediante conhecimento técnico.
+            Informações básicas e algumas configurações
           </h2>
         </div>
         <div class="column">
           <div class="card">
             <div class="card-header">
               <p class="card-header-title">
-                Dados do Usuário
+                Dados da Empresa
               </p>
             </div>
             <div class="card-content">
@@ -22,23 +22,68 @@
                 <div class="columns">
                   <div class="column">
                     <div class="field">
-                      <label class="label">Nome da empresa:</label>
-                      <input class="input" type="text" formControlName="nomeEmpresa" required>
+                      <label class="label">Nome da Empresa:</label>
+                      <input class="input" type="text" formControlName="nomeEmp" required>
                     </div>
                   </div>
+                </div>
+                <div class="columns">
                   <div class="column">
                     <div class="field">
-                      <label class="label">Telefone:</label>
-                      <input class="input" type="text" formControlName="telEmpresa" required>
+                      <label class="label">Telefone da empresa:</label>
+                      <input class="input" type="text" formControlName="telEmp" required>
                     </div>
                   </div>
+                </div>
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Endereço da empresa:</label>
+                      <input class="input" type="text" formControlName="enderecoEmp" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Site da empresa:</label>
+                      <input class="input" type="text" formControlName="siteEmp" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="columns">
+                  <div class="column">
+                    <div class="button is-primary" type="button" (click)="enviaForm()">Salvar</div>
+                  </div>
+                </div>
+                <div class="columns">
+                  <div *ngIf="erro" [hidden]="sucesso || msg" class="column">
+                    <div class="notification is-danger">
+                      <button (click)="fechaAviso()" class="delete"></button>
+                      Nos desculpe. Não foi possível cadastrar suas informações.
+                    </div>
+                  </div>
+                  <div *ngIf="sucesso" [hidden]="erro || msg" class="column">
+                    <div class="notification is-primary">
+                      <button (click)="fechaAviso()" class="delete"></button>
+                      Configuração atualizada com sucesso
+                    </div>
+                  </div>
+                  <div *ngIf="msg" [hidden]="erro || sucesso" class="column">
+                    <div class="notification is-info">
+                      <button (click)="fechaAviso()" class="delete"></button>
+                      Suas configurações estão atualizadas.
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="load" [hidden]="sucesso || erro" class="column">
+                  <ng-progress></ng-progress>
                 </div>
               </form>
             </div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </section>

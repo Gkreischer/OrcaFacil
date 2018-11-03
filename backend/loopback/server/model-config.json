@@ -51,5 +51,9 @@
   "infoempresa": {
     "dataSource": "MongoDB",
     "public": true
+  },
+  "configuracao": {
+    "dataSource": "MongoDB",
+    "public": true
   }
 }

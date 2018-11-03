@@ -34,7 +34,7 @@ export class ImpressaoService {
     );
   }
 
-  criaDocument(documento) {
+  criaDocumentTable(documento) {
     let docRecebido = documento;
 
     let docDefinition = {

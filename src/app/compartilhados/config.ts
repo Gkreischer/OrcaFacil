@@ -1,6 +1,6 @@
 export interface config {
-    nomeEmpresa: string;
-    telEmpresa: string;
-    enderecoEmpresa: string;
-    siteEmpresa: string;
+    nomeEmp: string;
+    telEmp: string;
+    enderecoEmp: string;
+    siteEmp: string;
 }

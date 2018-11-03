@@ -1,0 +1,34 @@
+{
+  "name": "configuracao",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "nomeEmp": {
+      "type": "string",
+      "required": true,
+      "default": "Sua Empresa"
+    },
+    "telEmp": {
+      "type": "string",
+      "required": true,
+      "default": "(00) 0000 - 0000"
+    },
+    "enderecoEmp": {
+      "type": "string",
+      "required": true,
+      "default": "Av. X - Bairro Centro - RJ"
+    },
+    "siteEmp": {
+      "type": "string",
+      "required": true,
+      "default": "www.seusite.com.br"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
