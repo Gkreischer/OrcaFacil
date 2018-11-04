@@ -16,16 +16,19 @@ export class ImpressaoService {
 
   API_URL: string = 'http://localhost:3000/api';
   dadosEmpresa;
-  
+
   constructor(private http: HttpClient) {
+    this.atribuiInfoEmpresaDocPDF();
+  }
+
+  atribuiInfoEmpresaDocPDF() {
     this.retornaInfEmpresa().subscribe((data) => {
       this.dadosEmpresa = data[0];
-      if(this.dadosEmpresa == undefined){
+      if (this.dadosEmpresa == undefined) {
         alert('Cadastre suas informações primeiro em Configurações');
       }
       console.log(this.dadosEmpresa);
     })
-
   }
 
   retornaInfEmpresa(): Observable<InfoEmpresa> {
@@ -34,10 +37,10 @@ export class ImpressaoService {
     );
   }
 
-  criaDocumentTable(documento) {
-    let docRecebido = documento;
+  criaTabelaDocPDF(informacoes) {
+    let infoTabela = informacoes;
 
-    let docDefinition = {
+    let dadosDocumento = {
 
       pageSize: 'A4',
       content: [
@@ -46,8 +49,8 @@ export class ImpressaoService {
         { text: this.dadosEmpresa.endereco, style: 'informacoesEmpresa' },
         { text: this.dadosEmpresa.site, style: 'informacoesEmpresa', margin: [0, 0, 0, 50] },
         // A categoria deve ter exatamente o mesmo nome das propriedades do objeto. Elas serão as colunas
-        { table: this.table(docRecebido, ['nome', 'categoria', 'fornecedor', 'quantidade', 'valor']) }
-        
+        { table: this.table(infoTabela, ['nome', 'categoria', 'fornecedor', 'quantidade', 'valor']) }
+
       ],
       styles: {
         nomedaEmpresa: {
@@ -60,14 +63,14 @@ export class ImpressaoService {
       },
       footer: {
         columns: [
-          { text: '_______________________________________________', alignment: 'center'},
+          { text: '_______________________________________________', alignment: 'center' },
         ]
       },
     };
 
     pdfmake.vfs = pdfFonts.pdfMake.vfs;
 
-    return pdfmake.createPdf(docDefinition).open();
+    return pdfmake.createPdf(dadosDocumento).open();
   }
 
 
@@ -91,14 +94,14 @@ export class ImpressaoService {
 
   table(data, columns) {
     return {
-        headerRows: 1,
-        // Para cada coluna, um tamanho
-        widths: ['*', '*', '*', '*', '*'],
-        body: this.buildTableBody(data, columns)
+      headerRows: 1,
+      // Para cada coluna, um tamanho
+      widths: ['*', '*', '*', '*', '*'],
+      body: this.buildTableBody(data, columns)
     };
   }
 
-  
+
   // Tratamento de erro
   handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

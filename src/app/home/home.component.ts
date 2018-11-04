@@ -26,8 +26,7 @@ export class HomeComponent implements OnInit {
   }
 
   verificaEstoque(){
-    this.load = true;
-    this.ngProgress.start();
+    this.exibeLoader();
     this.crud.lerRegistro('/pecas').subscribe((data) => {
       if(data.length === 0){
         this.msg = 'Você não tem peças cadastradas';
@@ -37,14 +36,12 @@ export class HomeComponent implements OnInit {
       }
       console.log('Lista recebindo. Itens devem ser exibidos agora.');
 
-      this.load = false;
-      this.ngProgress.done();
+      this.ocultaLoader();
       
     }, 
     erro => {
       this.erro = erro;
-      this.load = false;
-      this.ngProgress.done();
+      this.ocultaLoader();
     });
   }
   
@@ -52,11 +49,8 @@ export class HomeComponent implements OnInit {
     let target = event.target || event.srcElement || event.currentTarget;
     let idAttr = target.attributes.id;
 
-    this.load = true;
-    this.ngProgress.start();    
+    this.exibeLoader();
     let confirma = window.confirm('Tem certeza que deseja deletar o produto? ');
-
-    console.log(confirma);
 
     if(confirma) {
       this.crud.deletaRegistro('/pecas', idAttr.value).subscribe((data) => {
@@ -64,19 +58,26 @@ export class HomeComponent implements OnInit {
         console.log(idAttr.value);
         if(data.value == undefined){
           this.verificaEstoque();
-          this.load = false;
-          this.ngProgress.done();
+          this.ocultaLoader();
         }
         console.log('Lista atualizada');
       }, erro => {
         this.erro = erro;
-        this.load = false;
-        this.ngProgress.done();
+        this.ocultaLoader();
       });
     }
+    this.ocultaLoader();
+  }
 
-    this.load = false;
+  
+  exibeLoader() {
+    this.ngProgress.start();
+    this.load = true;
+  }
+
+  ocultaLoader() {
     this.ngProgress.done();
+    this.load = false;
   }
 
 }

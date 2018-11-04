@@ -28,6 +28,7 @@ export class CadastropecaComponent implements OnInit {
   modal: boolean = false;
   load: boolean = false;
   msg: string = null;
+
   ngOnInit() {
     this.pegaIdRota();
     this.leCategorias();
@@ -35,20 +36,21 @@ export class CadastropecaComponent implements OnInit {
   }
 
   pegaIdRota(){
-    // Verifica se tem ID na rota para atualização.
+    this.exibeLoader();
     this.route.params.subscribe((params) => {
       this.id = params.id;
-      this.ngProgress.start();
+      this.ocultaLoader();
       if(this.id != undefined){
-        this.ngProgress.start();
+        this.exibeLoader();
         this.crud.lerRegistroEspecifico('/pecas', this.id).subscribe((data) => {
           console.log('Id recebido da: ' + params.id);
           this.formPeca.patchValue(data);
           this.peca = data;
           console.log(data);
-          this.ngProgress.done();
-        }, error => {this.error = error, 
-          this.ngProgress.done();
+          this.ocultaLoader();
+        }, error => {
+          this.error = error, 
+          this.ocultaLoader();
         });
       }else {
         this.montaForm();
@@ -75,46 +77,39 @@ export class CadastropecaComponent implements OnInit {
   }
 
   enviaForm() {
+    this.exibeLoader();
+
     this.peca = this.formPeca.value;
-    console.log('Formulario enviado: ' + JSON.stringify(this.peca));
-    this.ngProgress.start();
-    this.load = true;
     this.crud.criarRegistro('/pecas', this.peca).subscribe((data) => {
-      console.log('Objeto criado: ' + JSON.stringify(data));
-      this.load = false;
-      this.ngProgress.done();
+      this.ocultaLoader();
       this.msg = 'Peça criada com sucesso.';
     }, error => {
       this.error = error;
-      this.load = false;
-      this.ngProgress.done();
+      this.ocultaLoader();
     });
   }
   
-  // Categorias
   leCategorias(){
+    this.exibeLoader();
     this.crud.lerRegistro('/categorias').subscribe((categorias) => {
       this.categorias = categorias;
+      this.ocultaLoader();
     }, error => {
       this.error = error;
-      this.load = false;
-      this.ngProgress.done();
+      this.ocultaLoader();
     });
   }
 
   registraCategoria() {
-    this.load = true
-    this.ngProgress.start();
+    this.exibeLoader();
     this.crud.criarRegistro('/categorias', this.formCategoria.value).subscribe((data) => {
       console.log('Categoria adicionada globalmente');
       this.categorias.push(this.formCategoria.value);      
-      this.load = false;
-      this.ngProgress.done();
+      this.ocultaLoader();
       this.abreModal(false);
     }, error => {
       this.error = error;
-      this.load = false;
-      this.ngProgress.done();
+      this.ocultaLoader();
       this.abreModal(false);
     });
   }
@@ -133,6 +128,16 @@ export class CadastropecaComponent implements OnInit {
   fechaAviso() {
     this.error = null;
     this.msg = null;
+  }
+
+  exibeLoader() {
+    this.load = true;
+    this.ngProgress.start();
+  }
+
+  ocultaLoader() {
+    this.load = false;
+    this.ngProgress.done();
   }
 
 }

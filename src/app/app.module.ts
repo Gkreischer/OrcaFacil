@@ -15,7 +15,7 @@ import { HomeComponent } from './home/home.component';
 import { NovoPedComponent } from './novo-ped/novo-ped.component'; 
 import { CrudService } from './servicos/crud.service';
 import { ImpressaoService } from './servicos/impressao.service';
-// Bibliotecas
+
 import { HttpClientModule } from '@angular/common/http';
 import { ConfiguracaoComponent } from './configuracao/configuracao.component';
 

@@ -21,18 +21,18 @@
           <div class="column">
             <div class="field">
               <label class="label">Categoria</label>
-              <div class="control">
-                <div class="select">
-                  <select *ngIf="categorias" formControlName="categoria" required>
-                    <option value="">--Selecione uma opção--</option>
-                    <option [value]="categoria.categoria" *ngFor="let categoria of categorias">{{categoria.categoria}}</option>
-                  </select>
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  <div class="select">
+                    <select *ngIf="categorias" formControlName="categoria" required>
+                      <option value="">--Selecione uma opção--</option>
+                      <option [value]="categoria.categoria" *ngFor="let categoria of categorias">{{categoria.categoria}}</option>
+                    </select>
+                  </div>
                 </div>
-                <button type="button" style="margin-top: 5px" class="button is-danger is-small is-rounded" (click)="abreModal(true)">
-                  <span class="icon">
-                    <i class="fas fa-plus"></i>
-                  </span>
-                </button>
+                <div class="control">
+                  <button type="button" class="button is-primary" (click)="abreModal(true)">Adicionar</button>
+                </div>
               </div>
             </div>
           </div>
@@ -111,9 +111,9 @@
 
               <div class="field">
                 <label class="label has-text-black">Categoria</label>
-                  <div class="control">
-                    <input class="input" type="text" formControlName="categoria" required>
-                  </div>
+                <div class="control">
+                  <input class="input" type="text" formControlName="categoria" required>
+                </div>
               </div>
 
             </section>

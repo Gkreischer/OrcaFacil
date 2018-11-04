@@ -33,6 +33,7 @@ export class NovoPedComponent implements OnInit {
   modal: boolean = false;
   load: boolean = false;
   msg: string = null;
+  
   constructor(public fb: FormBuilder, public crud: CrudService,
     public ngProgress: NgProgress, private route: ActivatedRoute,
     public impressao: ImpressaoService) { }
@@ -61,38 +62,31 @@ export class NovoPedComponent implements OnInit {
       categoria: ['', Validators.required]
     });
 
-    this.pedido = this.formPedido.value;
-
-    this.leCategorias();
-    // console.log(this.formPedido.value);
+    this.pedido = this.formPedido.value;    
   }
 
   // Categorias
   leCategorias() {
-    this.ngProgress.start();
+    this.exibeLoader();
     this.crud.lerRegistro('/categorias').subscribe((categorias) => {
       this.categorias = categorias;
-      this.ngProgress.done();
+      this.ocultaLoader();
     }, error => {
       this.erro = error;
-      this.load = false;
-      this.ngProgress.done();
+      this.ocultaLoader();
     });
   }
 
   registraCategoria() {
-    this.load = true
-    this.ngProgress.start();
+    this.exibeLoader();
     this.crud.criarRegistro('/categorias', this.formCategoria.value).subscribe((data) => {
       console.log('Categoria adicionada globalmente');
       this.categorias.push(this.formCategoria.value);
-      this.load = false;
-      this.ngProgress.done();
+      this.ocultaLoader();
       this.abreModal(false);
     }, error => {
       this.erro = error.status;
-      this.load = false;
-      this.ngProgress.done();
+      this.ocultaLoader();
       this.abreModal(false);
     });
   }
@@ -111,14 +105,14 @@ export class NovoPedComponent implements OnInit {
 
   adicionaPecaLista() {
 
-    this.ngProgress.start();
+    this.exibeLoader();
     this.pedido = this.formPedido.value;
 
     // Verifica se a peça está na lista do pedido.
     for (let i = 0; i < this.listaPecas.length; i++) {
       if (this.listaPecas[i] === this.pedido) {
         alert('Objeto já adicionado');
-        this.ngProgress.done();
+        this.ocultaLoader();
         return false;
 
       }
@@ -127,18 +121,13 @@ export class NovoPedComponent implements OnInit {
     if (this.pedido != undefined) {
 
       this.crud.criarRegistro('/pecasPed', this.pedido).subscribe((data) => {
-
-        console.table(data);
         this.listaPecas.push(data);
-        this.ngProgress.done();
+        this.ocultaLoader();
       },
         error => {
           this.erro = error;
-          this.ngProgress.done();
+          this.ocultaLoader();
         });
-      console.table(this.listaPecas);
-      //let index = this.listaPecas.findIndex(posicao => posicao.nome == 'a4 6300');
-      // Continuar daqui....ao gerar os botões, está atualizando a ID, colocando todos os valores iguais.
     } else {
       console.log('Sem peça no formulario de adicionar');
     }
@@ -150,65 +139,51 @@ export class NovoPedComponent implements OnInit {
     let idAttr = target.attributes.id;
     console.log(target);
 
-    this.ngProgress.start();
+    this.exibeLoader();
     let confirma = window.confirm('Tem certeza que deseja deletar o produto? ');
-
-    console.log(confirma);
 
     if (confirma) {
       this.crud.deletaRegistro('/pecasPed', idAttr.value).subscribe((data) => {
 
-        console.log(idAttr.value);
-        // Remove o objeto do array listapecas
         for(let i = 0; i < this.listaPecas.length; i++){
           if(this.listaPecas[i].id === idAttr.value){
             this.listaPecas.splice(i,1);
           }
         }
-        this.ngProgress.done();
-        console.log('Lista atualizada');
-        console.log(this.listaPecas);
+        this.ocultaLoader();
       }, erro => {
         this.erro = erro;
-        this.load = false;
-        this.ngProgress.done();
+        this.ocultaLoader();
       });
     }
   }
 
   downloadPDF() {
 
-    this.ngProgress.start();
-
+    this.exibeLoader();
     
-    // Eu sei que tem que melhorar essa parte, mas farei depois. No momento, me serve.
-    let columns = [ 
-                    {title: "ID", dataKey: "id"},
-                    {title: "Nome", dataKey: "nome"},
-                    {title: "Categoria", dataKey: "categoria"},
-                    {title: "Fornecedor", dataKey: "fornecedor"}, 
-                    {title: "Quantidade", dataKey: "quantidade"},
-                    {title: "Valor", dataKey: "valor"} 
-                  ];
-    let rows = this.listaPecas;
-    
-    this.impressao.criaDocumentTable(rows);
+    this.impressao.criaTabelaDocPDF(this.listaPecas);
 
-    this.ngProgress.done();
+    this.ocultaLoader();
 
   }
 
-
-
-  // Controles de interface
   abreModal(op: boolean) {
     if (op) {
       this.modal = true;
-      console.log('Modal abrindo');
     } else {
       this.modal = false;
-      console.log('Modal fechando');
     }
+  }
+
+  exibeLoader() {
+    this.ngProgress.start();
+    this.load = true;
+  }
+
+  ocultaLoader() {
+    this.ngProgress.done();
+    this.load = false;
   }
 
 }
