@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
 
 import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -20,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ConfiguracaoComponent } from './configuracao/configuracao.component';
 
 
+registerLocaleData(localePt);
 
 @NgModule({
   declarations: [
@@ -41,7 +44,8 @@ import { ConfiguracaoComponent } from './configuracao/configuracao.component';
   providers: [
   CrudService,
   ImpressaoService,
-  {provide: BrowserXhr, useClass: NgProgressBrowserXhr}
+  {provide: BrowserXhr, useClass: NgProgressBrowserXhr},
+  {provide: LOCALE_ID, useValue: 'pt' }
   ],
   bootstrap: [AppComponent]
 })
