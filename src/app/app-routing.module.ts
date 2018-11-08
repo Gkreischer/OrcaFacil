@@ -9,6 +9,8 @@ import { HomeComponent } from './home/home.component';
 import { NovoPedComponent } from './novo-ped/novo-ped.component'; 
 import { ConfiguracaoComponent } from './configuracao/configuracao.component';
 
+import { HistoricoPedComponent } from './historico-ped/historico-ped.component';
+
 const routes: Routes = [
   { path: 'home', component: HomeComponent},
   { path: 'orcamento', component: OrcamentoComponent},
@@ -16,6 +18,7 @@ const routes: Routes = [
   { path: 'cadastropeca/:id', component: CadastropecaComponent},
   { path: 'novoPed', component: NovoPedComponent},
   { path: 'novoPed/:id', component: NovoPedComponent},
+  { path: 'historicoPed', component: HistoricoPedComponent},
   { path: 'configuracao', component: ConfiguracaoComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full'},
   { path: '**', component: HomeComponent},

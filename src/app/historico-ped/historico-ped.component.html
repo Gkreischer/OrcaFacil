@@ -1,0 +1,67 @@
+<section class="hero is-fullheight is-black">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns">
+        <div class="column">
+          <h1 class="title has-text-white">
+            Histórico de Pedidos
+          </h1>
+          <h2 class="subtitle">
+            Confira pedidos feitos e altere seu estado.
+          </h2>
+        </div>
+        <div class="column  is-three-quarters">
+          <div class="card">
+            <div class="card-header">
+              <p class="card-header-title">
+                Histórico
+              </p>
+            </div>
+            <div class="card-content">
+
+              <div class="columns">
+                <div class="column">
+                  <table *ngIf="listaPecas" class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                    <thead>
+                      <tr>
+                        <th>Data</th>
+                        <th>Peças</th>
+                        <th>Valor Total</th>
+                        <th>Situação</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngFor="let lista of listaPedidos">
+                      <td>{{lista.createdAt | date}}</td>
+                      <td>{{lista.pecas}}</td>
+                      <td class="has-text-centered">{{lista.valor}}</td>
+                      <td class="has-text-centered">{{lista.situacao}}</td>
+                      <td class="has-text-centered">
+                        <button class="button is-small" id="{{lista.id}}" routerLink="/cadastropeca/{{lista.id}}">Editar</button>
+                        <button class="button is-small is-danger" id="{{lista.id}}" (click)="deletaPeca($event)">Excluir</button>
+                      </td>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div *ngIf="load" [hidden]="msg || error" class="column">
+                <ng-progress></ng-progress>
+              </div>
+              <div *ngIf="msg" class="column has-text-centered">
+                <div class="is-size-5">
+                  {{msg}}
+                </div>
+              </div>
+              <div *ngIf="erro" class="column has-text-centered">
+                <div class="is-size-5">
+                  {{erro}}
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

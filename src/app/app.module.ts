@@ -20,6 +20,7 @@ import { ImpressaoService } from './servicos/impressao.service';
 
 import { HttpClientModule } from '@angular/common/http';
 import { ConfiguracaoComponent } from './configuracao/configuracao.component';
+import { HistoricoPedComponent } from './historico-ped/historico-ped.component';
 
 
 registerLocaleData(localePt);
@@ -32,7 +33,8 @@ registerLocaleData(localePt);
     OrcamentoComponent,
     HomeComponent,
     NovoPedComponent,
-    ConfiguracaoComponent
+    ConfiguracaoComponent,
+    HistoricoPedComponent
   ],
   imports: [
     BrowserModule,
