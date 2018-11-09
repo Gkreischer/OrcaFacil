@@ -65,7 +65,6 @@ export class NovoPedComponent implements OnInit {
     this.pedido = this.formPedido.value;    
   }
 
-  // Categorias
   leCategorias() {
     this.exibeLoader();
     this.crud.lerRegistro('/categorias').subscribe((categorias) => {
@@ -89,18 +88,6 @@ export class NovoPedComponent implements OnInit {
       this.ocultaLoader();
       this.abreModal(false);
     });
-  }
-
-  verificaLista() {
-    this.ngProgress.start();
-    this.crud.lerRegistro('/pecasPed').subscribe((data) => {
-      this.listaPecas = data;
-      this.ngProgress.done();
-    },
-      error => {
-        this.erro = error;
-        this.ngProgress.done()
-      });
   }
 
   adicionaPecaLista() {
@@ -166,6 +153,19 @@ export class NovoPedComponent implements OnInit {
 
     this.ocultaLoader();
 
+  }
+
+  salvaPedido() {
+
+    this.crud.criarRegistro('/historicoPeds', this.listaPecas).subscribe((data) => {
+      if(data) {
+        this.msg = 'Pedido salvo com sucesso. Acompanhe em Pedidos > Histórico';
+      }else{
+        this.msg = 'Desculpe, não foi possível salvar. Tente novamente';
+      }
+    }, error => {
+      this.erro = error;
+    });
   }
 
   abreModal(op: boolean) {
