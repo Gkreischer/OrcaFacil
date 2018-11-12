@@ -80,13 +80,23 @@ export class CadastropecaComponent implements OnInit {
     this.exibeLoader();
 
     this.peca = this.formPeca.value;
-    this.crud.criarRegistro('/pecas', this.peca).subscribe((data) => {
+    if(this.id != undefined){
+      this.crud.atualizaRegistroEspecifico('/pecas', this.id, this.peca).subscribe((data) => {
       this.ocultaLoader();
-      this.msg = 'Peça criada com sucesso.';
-    }, error => {
-      this.error = error;
-      this.ocultaLoader();
-    });
+      this.msg = 'Peça atualizada com sucesso';
+      }, error => {
+        this.error = error;
+        this.ocultaLoader();
+      });
+    }else {
+      this.crud.criarRegistro('/pecas', this.peca).subscribe((data) => {
+        this.ocultaLoader();
+        this.msg = 'Peça criada com sucesso.';
+      }, error => {
+        this.error = error;
+        this.ocultaLoader();
+      });
+    }
   }
   
   leCategorias(){
