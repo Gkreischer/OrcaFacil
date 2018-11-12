@@ -30,6 +30,12 @@ export class CrudService {
     );
   }
 
+  atualizaRegistroEspecifico(rota, id, form): Observable<any> {
+    return this.http.put(this.API_URL + rota + '/' + id, form).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   deletaRegistro(rota, id): Observable<any> {
     return this.http.delete(this.API_URL + rota + '/' + id).pipe(
       catchError(this.handleError)

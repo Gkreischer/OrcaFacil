@@ -84,7 +84,7 @@
           <div *ngIf="error" [hidden]="msg" class="column">
             <div class="notification is-danger">
               <button (click)="fechaAviso()" class="delete"></button>
-              Nos desculpe. Não foi possível cadastrar a peça.
+              {{error}}
             </div>
           </div>
           <div *ngIf="msg" [hidden]="error" class="column">

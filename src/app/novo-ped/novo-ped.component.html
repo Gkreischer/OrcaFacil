@@ -10,14 +10,6 @@
 
       <form *ngIf="pedido; else load" [formGroup]="formPedido" (ngSubmit)="enviaForm()">
         <div class="columns">
-          <div class="column is-2">
-            <div class="field">
-              <label class="label">Data de solicitação:</label>
-              <div class="control">
-                <input class="input" type="text" formControlName="data" required readonly>
-              </div>
-            </div>
-          </div>
           <div class="column">
             <div class="field">
               <label class="label">Nome da peça:</label>
@@ -115,7 +107,7 @@
         <div class="columns">
           <div class="column">
             <div class="field">
-              <button [disabled]="!listaPecas.length != 0" class="button is-success" (click)="downloadPDF()" type=button>Salvar</button>
+              <button [disabled]="!listaPecas.length != 0" class="button is-success" (click)="salvaPedido()" type=button>Salvar</button>
             </div>
           </div>
         </div>
@@ -130,7 +122,7 @@
           <div *ngIf="msg" [hidden]="erro" class="column">
             <div class="notification is-primary">
               <button (click)="fechaAviso()" class="delete"></button>
-              Peça cadastrada com sucesso.
+              {{msg}}
             </div>
           </div>
         </div>

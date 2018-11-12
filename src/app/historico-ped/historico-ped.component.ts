@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CrudService } from './../servicos/crud.service';
 import { NgProgress } from 'ngx-progressbar';
-
 import { listaPedidos } from './../compartilhados/listaPedidos';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-historico-ped',
@@ -11,27 +11,32 @@ import { listaPedidos } from './../compartilhados/listaPedidos';
 })
 export class HistoricoPedComponent implements OnInit {
 
-  constructor(public crud: CrudService, public ngProgress: NgProgress) {
-    this.verificaEstoque();
+  constructor(public crud: CrudService, public ngProgress: NgProgress,
+      public fb: FormBuilder) {
    }
 
   ngOnInit() {
+    this.montaForm();
+    this.verificaPedidos();
   }
 
   listaPedidos: listaPedidos[];
+  formSituacaoPedido: FormGroup
+  situacaoPedido;
 
   msg;
   load: boolean = false;
   erro: boolean = false;
 
-  verificaEstoque() {
+
+  verificaPedidos() {
     this.exibeLoader();
     this.crud.lerRegistro('/historicoPedidos').subscribe((data) => {
       if(data.length == 0){
         this.msg = 'Faça um novo pedido, em Pedido > Novo e ele aparecerá aqui.';
         this.listaPedidos = null;
-        this
       }else{
+        console.log(data);
         this.listaPedidos = data;
       }
       this.ocultaLoader();
@@ -49,11 +54,11 @@ export class HistoricoPedComponent implements OnInit {
     let confirma = window.confirm('Tem certeza que deseja deletar o produto? ');
 
     if(confirma) {
-      this.crud.deletaRegistro('/pecas', idAttr.value).subscribe((data) => {
+      this.crud.deletaRegistro('/historicoPedidos', idAttr.value).subscribe((data) => {
         
         console.log(idAttr.value);
         if(data.value == undefined){
-          this.verificaEstoque();
+          this.verificaPedidos();
           this.ocultaLoader();
         }
         console.log('Lista atualizada');
@@ -73,6 +78,25 @@ export class HistoricoPedComponent implements OnInit {
   ocultaLoader() {
     this.ngProgress.done();
     this.load = false;
+  }
+
+  montaForm() {
+    this.formSituacaoPedido = this.fb.group({
+      situacao: ['', Validators.required]
+    });
+
+    this.situacaoPedido = this.formSituacaoPedido.value;
+  }
+
+  enviaForm() {
+    console.table(this.situacaoPedido);
+  }
+
+  exibeValor(event) {
+
+    let target = event.target || event.srcElement || event.currentTarget;
+    let idAttr = target.attributes.id.value;
+    console.log(idAttr);
   }
 
 }

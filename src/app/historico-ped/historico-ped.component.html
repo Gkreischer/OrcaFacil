@@ -21,11 +21,11 @@
 
               <div class="columns">
                 <div class="column">
-                  <table *ngIf="listaPecas" class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                  <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
                     <thead>
                       <tr>
                         <th>Data</th>
-                        <th>Peças</th>
+                        <th>N° de Peças</th>
                         <th>Valor Total</th>
                         <th>Situação</th>
                         <th>Ações</th>
@@ -33,11 +33,27 @@
                     </thead>
                     <tbody *ngFor="let lista of listaPedidos">
                       <td>{{lista.createdAt | date}}</td>
-                      <td>{{lista.pecas}}</td>
-                      <td class="has-text-centered">{{lista.valor}}</td>
-                      <td class="has-text-centered">{{lista.situacao}}</td>
+                      <td class="has-text-centered">{{lista.listaPecas.length}}</td>
+                      <td class="has-text-centered">{{lista.valorTotal}}</td>
+                      <td >
+                        <form [formGroup]="formSituacaoPedido" (ngSubmit)="enviaForm()">
+                          <div id="campoSituacao" class="field has-addons">
+                            <div class="control">
+                              <div class="select is-small">
+                                <select formControlName="situacao" required>
+                                  <option value="">--Selecione uma opção--</option>
+                                  <option [value]="lista.situacao">{{lista.situacao}}</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="control">
+                                <button type="button" class="button is-info is-small" (click)="exibeValor($event)" id="{{lista.id}}">Atualizar</button>
+                              </div>
+                          </div>
+                        </form>
+                      </td>
                       <td class="has-text-centered">
-                        <button class="button is-small" id="{{lista.id}}" routerLink="/cadastropeca/{{lista.id}}">Editar</button>
+                        <button class="button is-small" id="{{lista.id}}" routerLink="/novoPed/{{lista.id}}">Editar</button>
                         <button class="button is-small is-danger" id="{{lista.id}}" (click)="deletaPeca($event)">Excluir</button>
                       </td>
                     </tbody>
@@ -58,7 +74,7 @@
                 </div>
               </div>
             </div>
-            
+
           </div>
         </div>
       </div>

@@ -1,0 +1,33 @@
+{
+  "name": "historicoPedidos",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "mixins": {
+    "TimeStamp": true
+  },
+  "properties": {
+    "valorTotal": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "listaPecas": {
+      "type": [
+        "object"
+      ],
+      "required": true
+    },
+    "situacao": {
+      "type": "string",
+      "required": "true",
+      "default": "a pagar"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

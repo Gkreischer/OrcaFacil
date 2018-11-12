@@ -55,5 +55,9 @@
   "configuracao": {
     "dataSource": "MongoDB",
     "public": true
+  },
+  "historicoPedidos": {
+    "dataSource": "MongoDB",
+    "public": true
   }
 }

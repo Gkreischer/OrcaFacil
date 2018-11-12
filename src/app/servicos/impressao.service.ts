@@ -27,7 +27,7 @@ export class ImpressaoService {
       if (this.dadosEmpresa == undefined) {
         alert('Cadastre suas informações primeiro em Configurações');
       }
-      console.log(this.dadosEmpresa);
+      console.log('Dados da empresa recebidos:', this.dadosEmpresa);
     })
   }
 

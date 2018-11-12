@@ -6,19 +6,12 @@
   "options": {
     "validateUpsert": true
   },
-  "mixins": {
-    "TimeStamp": true
-  },
   "properties": {
     "nome": {
       "type": "string",
       "required": true
     },
     "categoria": {
-      "type": "string",
-      "required": true
-    },
-    "data": {
       "type": "string",
       "required": true
     },
