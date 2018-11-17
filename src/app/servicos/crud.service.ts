@@ -31,7 +31,7 @@ export class CrudService {
   }
 
   atualizaRegistroEspecifico(rota, id, form): Observable<any> {
-    return this.http.put(this.API_URL + rota + '/' + id, form).pipe(
+    return this.http.patch(this.API_URL + rota + '/' + id, form).pipe(
       catchError(this.handleError)
     );
   }
