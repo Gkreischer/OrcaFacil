@@ -199,10 +199,11 @@ export class NovoPedComponent implements OnInit {
     console.log('Verificando var pedidoFinalizado:', this.pedidoFinalizado);
 
     if(this.id != undefined){
-      console.log('O pedido será atualizado');
+      console.log('O pedido será atualizado', this.pedidoFinalizado);
       this.crud.atualizaRegistroEspecifico('/historicoPedidos', this.id, this.pedidoFinalizado).subscribe((data) => {
         if(data){
           this.msg = 'Pedido atualizado com sucesso';
+          this.downloadPDF();
         }else{
           this.msg = 'Algo deu errado. Nos desculpe. Tente novamente';
         }

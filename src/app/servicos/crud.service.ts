@@ -12,7 +12,7 @@ export class CrudService {
   constructor(public http: HttpClient) { }
 
   criarRegistro(rota: string, form): Observable<any> {
-    return this.http.put(this.API_URL + rota, form).pipe(
+    return this.http.post(this.API_URL + rota, form).pipe(
       catchError(this.handleError)
     );
   }

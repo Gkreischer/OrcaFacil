@@ -25,25 +25,28 @@ export class ConfiguracaoComponent implements OnInit {
 
   formConfig: FormGroup;
   config;
-
+  id;
 
   erro;
   load: boolean = false;
-  msg: boolean = false;
+  msg: string = null;
   sucesso;
 
   verificaInfoConfig() {
     this.exibeLoader();
-    this.crud.lerRegistro('/configuracaos').subscribe((data) => {
+    this.crud.lerRegistro('/infoempresas').subscribe((data) => {
       if (data.length != 0) {
         console.table(data);
         this.formConfig.patchValue(data[0]);
         this.config = data[0];
+        this.id = data[0].id;
+        console.log(this.id);
         this.ocultaLoader();
-        this.msg = true;
+        this.msg = 'Suas configurações estão salvas.';
       } else {
-        console.log('Nenhuma configuração cadastrada ainda');
         this.ocultaLoader();
+        this.msg = 'Nenhuma configuração cadastrada ainda';
+        
       }
     }, error => {
       this.erro = error;
@@ -53,10 +56,11 @@ export class ConfiguracaoComponent implements OnInit {
 
   montaForm() {
     this.formConfig = this.fb.group({
-      nomeEmp: ['', Validators.required],
-      telEmp: ['', Validators.required],
-      enderecoEmp: ['', Validators.required],
-      siteEmp: ['', Validators.required]
+      nome: ['', Validators.required],
+      telefone: ['', Validators.required],
+      endereco: ['', Validators.required],
+      site: ['', Validators.required],
+      email: ['', Validators.required]
     });
 
     this.config = this.formConfig.value;
@@ -64,13 +68,31 @@ export class ConfiguracaoComponent implements OnInit {
 
   enviaForm() {
     this.exibeLoader();
-    this.config = this.formConfig.value;
+    this.pegaValoresFormEmpresa();
+    if (this.id) {
+      this.atualizaValoresSeEmpresaExistir();
+    } else {
+      this.cadastraNovaInfoEmpresa();
+    }
 
+  }
+
+  atualizaValoresSeEmpresaExistir() {
+    this.crud.atualizaRegistroEspecifico('/infoempresas', this.id, this.config).subscribe((data) => {
+      this.msg = 'Configuração atualizada com sucesso';
+      this.ocultaLoader();
+    });
+  }
+
+  pegaValoresFormEmpresa() {
+    this.config = this.formConfig.value;
     console.log('Cliente enviando:');
     console.log(this.config);
+  }
 
-    this.crud.criarRegistro('/configuracaos', this.config).subscribe((data) => {
-      this.msg = true;
+  cadastraNovaInfoEmpresa() {
+    this.crud.criarRegistro('/infoempresas', this.config).subscribe((data) => {
+      this.msg = 'Suas informações foram cadastradas';
       console.table(data);
       this.ocultaLoader();
     }, error => {
@@ -81,8 +103,10 @@ export class ConfiguracaoComponent implements OnInit {
   }
 
   fechaAviso() {
-    if (this.msg) {
-      this.msg = false;
+    if (this.msg || this.sucesso || this.erro) {
+      this.msg = null;
+      this.sucesso = false;
+      this.erro = null;
     }
   }
 
