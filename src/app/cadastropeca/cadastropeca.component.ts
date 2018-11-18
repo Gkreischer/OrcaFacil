@@ -24,7 +24,7 @@ export class CadastropecaComponent implements OnInit {
   peca: Observable<Peca>;
   categorias;
 
-  error;
+  erro;
   modal: boolean = false;
   load: boolean = false;
   msg: string = null;
@@ -49,7 +49,7 @@ export class CadastropecaComponent implements OnInit {
           console.log(data);
           this.ocultaLoader();
         }, error => {
-          this.error = error, 
+          this.erro = error, 
           this.ocultaLoader();
         });
       }else {
@@ -85,7 +85,7 @@ export class CadastropecaComponent implements OnInit {
       this.ocultaLoader();
       this.msg = 'Peça atualizada com sucesso';
       }, error => {
-        this.error = error;
+        this.erro = error;
         this.ocultaLoader();
       });
     }else {
@@ -93,7 +93,7 @@ export class CadastropecaComponent implements OnInit {
         this.ocultaLoader();
         this.msg = 'Peça criada com sucesso.';
       }, error => {
-        this.error = error;
+        this.erro = error;
         this.ocultaLoader();
       });
     }
@@ -105,7 +105,7 @@ export class CadastropecaComponent implements OnInit {
       this.categorias = categorias;
       this.ocultaLoader();
     }, error => {
-      this.error = error;
+      this.erro = error;
       this.ocultaLoader();
     });
   }
@@ -118,7 +118,7 @@ export class CadastropecaComponent implements OnInit {
       this.ocultaLoader();
       this.abreModal(false);
     }, error => {
-      this.error = error;
+      this.erro = error;
       this.ocultaLoader();
       this.abreModal(false);
     });
@@ -136,7 +136,7 @@ export class CadastropecaComponent implements OnInit {
   }
   
   fechaAviso() {
-    this.error = null;
+    this.erro = null;
     this.msg = null;
   }
 

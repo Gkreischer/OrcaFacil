@@ -12,7 +12,6 @@ import { BrowserXhr } from '@angular/http';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
 import { CadastropecaComponent } from './cadastropeca/cadastropeca.component';
-import { OrcamentoComponent } from './orcamento/orcamento.component';
 import { HomeComponent } from './home/home.component';
 import { NovoPedComponent } from './novo-ped/novo-ped.component'; 
 import { CrudService } from './servicos/crud.service';
@@ -21,6 +20,7 @@ import { ImpressaoService } from './servicos/impressao.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ConfiguracaoComponent } from './configuracao/configuracao.component';
 import { HistoricoPedComponent } from './historico-ped/historico-ped.component';
+import { NovoOrcamentoComponent } from './novo-orcamento/novo-orcamento.component';
 
 
 registerLocaleData(localePt);
@@ -30,11 +30,11 @@ registerLocaleData(localePt);
     AppComponent,
     MenuComponent,
     CadastropecaComponent,
-    OrcamentoComponent,
     HomeComponent,
     NovoPedComponent,
     ConfiguracaoComponent,
-    HistoricoPedComponent
+    HistoricoPedComponent,
+    NovoOrcamentoComponent
   ],
   imports: [
     BrowserModule,

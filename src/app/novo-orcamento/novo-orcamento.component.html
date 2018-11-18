@@ -1,0 +1,63 @@
+<section class="hero is-danger ">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns">
+        <div class="column">
+          <h1 class="is-size-2">Orçamento</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="hero">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-multiline">
+        <div *ngFor="let lista of categorias" class="column is-one-quarter">
+          <div class="card">
+            <div class="card-header">
+              <p class="card-header-title">
+                {{lista.categoria}}
+              </p>
+            </div>
+            <div class="card-content">
+              <div class="content">
+                <div class="field">
+                  <div class="control is-expanded">
+                    <div class="select">
+                      <select required>
+                        <option value="">--Selecione uma opção--</option>
+                        <option></option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column">
+          <div class="card">
+            <div class="card-header">
+              <p class="card-header-title">
+                Resumo do orçamento:
+              </p>
+            </div>
+            <div class="card-content">
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column">
+          <div *ngIf="load" [hidden]="msg || error" class="column">
+            <ng-progress></ng-progress>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

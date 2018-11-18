@@ -22,20 +22,19 @@ export class NovoPedComponent implements OnInit {
 
   formPedido: FormGroup;
   pedido;
-  
+
   valorTotalListaPecas: number = 0;
 
   formCategoria: FormGroup;
   categorias;
   listaPecas: Pedido[] = [];
   pedidoFinalizado: pedidoFinalizado;
-  @ViewChild('conteudo') conteudo: ElementRef;
   id: string = null;
   erro;
   modal: boolean = false;
   load: boolean = false;
   msg: string = null;
-  
+
   constructor(public fb: FormBuilder, public crud: CrudService,
     public ngProgress: NgProgress, private route: ActivatedRoute,
     public impressao: ImpressaoService) { }
@@ -46,32 +45,32 @@ export class NovoPedComponent implements OnInit {
     this.leCategorias();
   }
 
-  pegaIdRota(){
+  pegaIdRota() {
     this.exibeLoader();
     this.route.params.subscribe((params) => {
       this.id = params.id;
       this.ocultaLoader();
-      if(this.id != undefined){
+      if (this.id != undefined) {
         this.exibeLoader();
         this.crud.lerRegistroEspecifico('/historicoPedidos', this.id).subscribe((data) => {
           console.log('Id recebido da: ' + params.id);
           this.listaPecas = data.listaPecas;
-          for(let i = 0; i < this.listaPecas.length; i++){
+          for (let i = 0; i < this.listaPecas.length; i++) {
             this.valorTotalListaPecas = this.valorTotalListaPecas + this.listaPecas[i].valor;
           }
           this.ocultaLoader();
         }, error => {
-          this.erro = error, 
-          this.ocultaLoader();
+          this.erro = error,
+            this.ocultaLoader();
         });
-      }else {
+      } else {
         this.montaForm();
       }
     });
   }
 
   montaForm() {
-    
+
     this.formPedido = this.fb.group({
       nome: ['', Validators.required],
       categoria: ['', Validators.required],
@@ -84,7 +83,7 @@ export class NovoPedComponent implements OnInit {
       categoria: ['', Validators.required]
     });
 
-    this.pedido = this.formPedido.value;    
+    this.pedido = this.formPedido.value;
   }
 
   leCategorias() {
@@ -157,20 +156,20 @@ export class NovoPedComponent implements OnInit {
 
     if (confirma) {
 
-      
-      this.crud.deletaRegistro('/pecasPed', idAttr.value).subscribe((data) => {
-
-        for(let i = 0; i < this.listaPecas.length; i++){
-          if(this.listaPecas[i].id === idAttr.value){
-            console.log(this.listaPecas[i].valor);
-            this.valorTotalListaPecas = this.valorTotalListaPecas - this.listaPecas[i].valor;
-            console.log(this.valorTotalListaPecas);
-            setTimeout(() => {
-              this.listaPecas.splice(i,1);
-            },
+      for (let i = 0; i < this.listaPecas.length; i++) {
+        if (this.listaPecas[i].id === idAttr.value) {
+          console.log(this.listaPecas[i].valor);
+          this.valorTotalListaPecas = this.valorTotalListaPecas - this.listaPecas[i].valor;
+          console.log(this.valorTotalListaPecas);
+          setTimeout(() => {
+            this.listaPecas.splice(i, 1);
+          },
             1000);
-          }
         }
+      }
+
+      this.crud.deletaRegistro('/pecasPed', idAttr.value).subscribe((data) => {
+        console.log(data);
         this.ocultaLoader();
       }, erro => {
         this.erro = erro;
@@ -182,7 +181,7 @@ export class NovoPedComponent implements OnInit {
   downloadPDF() {
 
     this.exibeLoader();
-    
+
     this.impressao.criaTabelaDocPDF(this.listaPecas);
 
     this.ocultaLoader();
@@ -192,30 +191,30 @@ export class NovoPedComponent implements OnInit {
   salvaPedido() {
 
     console.log('Valor total das peças recebidas:', this.valorTotalListaPecas);
-    console.log('Peças recebecidas:',this.listaPecas);
-    
-    this.pedidoFinalizado = {valorTotal: this.valorTotalListaPecas, listaPecas: this.listaPecas};
+    console.log('Peças recebecidas:', this.listaPecas);
+
+    this.pedidoFinalizado = { valorTotal: this.valorTotalListaPecas, listaPecas: this.listaPecas };
 
     console.log('Verificando var pedidoFinalizado:', this.pedidoFinalizado);
 
-    if(this.id != undefined){
+    if (this.id != undefined) {
       console.log('O pedido será atualizado', this.pedidoFinalizado);
       this.crud.atualizaRegistroEspecifico('/historicoPedidos', this.id, this.pedidoFinalizado).subscribe((data) => {
-        if(data){
+        if (data) {
           this.msg = 'Pedido atualizado com sucesso';
           this.downloadPDF();
-        }else{
+        } else {
           this.msg = 'Algo deu errado. Nos desculpe. Tente novamente';
         }
       }, error => {
         this.erro = error;
       });
-    }else{
+    } else {
       this.crud.criarRegistro('/historicoPedidos', this.pedidoFinalizado).subscribe((data) => {
-        if(data) {
+        if (data) {
           this.msg = 'Pedido salvo com sucesso. Acompanhe em Pedidos > Histórico';
           this.downloadPDF();
-        }else{
+        } else {
           this.msg = 'Desculpe, não foi possível salvar. Tente novamente';
         }
       }, error => {
