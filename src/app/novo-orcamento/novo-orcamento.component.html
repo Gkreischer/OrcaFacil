@@ -1,4 +1,4 @@
-<section class="hero is-danger ">
+<section class="hero is-danger">
   <div class="hero-body">
     <div class="container">
       <div class="columns">
@@ -14,23 +14,36 @@
     <div class="container">
       <div class="columns is-multiline">
         <div *ngFor="let lista of categorias" class="column is-one-quarter">
+          <nav class="panel">
+            <p class="panel-heading">
+              Categorias
+            </p>
+              <a *ngFor="let lista of categorias" (click)="verificaCategoriaSelecionada($event)" id="{{lista.categoria}}" class="panel-block is-active">
+               {{lista.categoria}}
+              </a>
+            <div class="panel-block">
+              <button (click)="resetaCategorias()" class="button is-link is-focused is-fullwidth">
+                Limpar categorias
+              </button>
+            </div>
+          </nav>
+        </div>
+        <div *ngIf="categoriaSelecionada" class="column">
           <div class="card">
             <div class="card-header">
               <p class="card-header-title">
-                {{lista.categoria}}
+                {{categoriaSelecionada}}
               </p>
             </div>
             <div class="card-content">
-              <div class="content">
-                <div class="field">
-                  <div class="control is-expanded">
-                    <div class="select">
-                      <select required>
-                        <option value="">--Selecione uma opção--</option>
-                        <option></option>
-                      </select>
-                    </div>
-                  </div>
+              <div class="field has-addons">
+                <div class="control is-loading is-expanded">
+                  <input class="input" type="text" placeholder="Normal loading input">
+                </div>
+                <div class="control">
+                  <a class="button is-info">
+                    Procurar
+                  </a>
                 </div>
               </div>
             </div>

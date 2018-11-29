@@ -19,6 +19,8 @@ export class NovoOrcamentoComponent implements OnInit {
   erro;
   load: boolean = false;
   msg: string = null;
+  categoriaSelecionada: string = undefined;
+  menuSelecaoPecas: boolean = false;
   categorias;
   
   ngOnInit() {
@@ -29,11 +31,34 @@ export class NovoOrcamentoComponent implements OnInit {
     this.exibeLoader();
     this.crud.lerRegistro('/categorias').subscribe((data) => {
       this.categorias = data;
+      //console.table(this.categorias);
       this.ocultaLoader();
     }, error => {
       this.erro = error;
       this.ocultaLoader();
     });
+  }
+
+  verificaCategoriaSelecionada(event) {
+    let target = event.target || event.srcElement || event.currentTarget;
+    let idAttr = target.attributes.id.value;
+
+    console.log(idAttr);
+
+    this.categoriaSelecionada = idAttr;
+    
+    this.exibeMenuSelecaoDePecas();
+
+  }
+
+  exibeMenuSelecaoDePecas() {
+
+    this.menuSelecaoPecas = true;
+
+  }
+
+  resetaCategorias() {
+    this.categoriaSelecionada = undefined;
   }
 
   fechaAviso() {
