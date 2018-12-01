@@ -1,19 +1,11 @@
-<section class="hero is-danger">
-  <div class="hero-body">
-    <div class="container">
-      <div class="columns">
-        <div class="column">
-          <h1 class="is-size-2">Orçamento</h1>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 <section class="hero">
   <div class="hero-body">
     <div class="container">
+      <h1 class="title has-text-white">
+        Novo orçamento
+      </h1>
       <div class="columns is-multiline">
-        <div *ngFor="let lista of categorias" class="column is-one-quarter">
+        <div class="column is-one-quarter">
           <nav class="panel">
             <p class="panel-heading">
               Categorias
@@ -38,7 +30,7 @@
             <div class="card-content">
               <div class="field has-addons">
                 <div class="control is-loading is-expanded">
-                  <input class="input" type="text" placeholder="Normal loading input">
+                  <input class="input" type="text" placeholder="Digite aqui a peça que você necessita">
                 </div>
                 <div class="control">
                   <a class="button is-info">
