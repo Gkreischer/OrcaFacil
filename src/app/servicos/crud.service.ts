@@ -3,6 +3,8 @@ import { HttpClient, HttpErrorResponse} from  '@angular/common/http';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { catchError, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { Peca } from './../compartilhados/peca';
 
 
 @Injectable()
@@ -38,6 +40,13 @@ export class CrudService {
 
   deletaRegistro(rota, id): Observable<any> {
     return this.http.delete(this.API_URL + rota + '/' + id).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  procuraPeca(categoria): Observable<Peca[]> {
+    return this.http.get<any[]>(this.API_URL + '/pecas?filter[where][categoria]=' + categoria).pipe(
+      tap((data) => {return data}),
       catchError(this.handleError)
     );
   }

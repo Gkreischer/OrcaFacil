@@ -3,6 +3,11 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ActivatedRoute } from "@angular/router";
 import { CrudService } from './../servicos/crud.service';
 import { NgProgress } from 'ngx-progressbar';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+
+import { Peca } from './../compartilhados/peca';
+
 
 @Component({
   selector: 'app-novo-orcamento',
@@ -22,6 +27,9 @@ export class NovoOrcamentoComponent implements OnInit {
   categoriaSelecionada: string = undefined;
   menuSelecaoPecas: boolean = false;
   categorias;
+  listaPecas: Peca[] = null;
+  pecaSelecionada: Peca;
+  listaPecasOrcamento: Peca[] = [];
   
   ngOnInit() {
     this.leCategorias();
@@ -49,12 +57,34 @@ export class NovoOrcamentoComponent implements OnInit {
     
     this.exibeMenuSelecaoDePecas();
 
+    this.consultaPecasPorCategoria();
   }
 
   exibeMenuSelecaoDePecas() {
-
     this.menuSelecaoPecas = true;
+  }
 
+  consultaPecasPorCategoria() {
+    this.crud.procuraPeca(this.categoriaSelecionada).subscribe((data) => {
+      this.listaPecas = data;
+      console.table(this.listaPecas);
+    }, error => {
+      this.erro = error;
+    });
+  }
+
+  adicionaPecaOrcamento(event) {
+    let target = event.target || event.srcElement || event.currentTarget;
+    let idAttr = target.attributes.id.value;
+
+    console.log(idAttr);
+
+    this.crud.lerRegistroEspecifico('/pecas', idAttr).subscribe((data) => {
+      console.log(this.listaPecasOrcamento);
+      this.listaPecasOrcamento.push(data);
+    }, error => {
+      this.erro = error;
+    });
   }
 
   resetaCategorias() {
