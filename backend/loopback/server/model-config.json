@@ -59,5 +59,9 @@
   "historicoPedidos": {
     "dataSource": "MongoDB",
     "public": true
+  },
+  "container": {
+    "dataSource": "storage",
+    "public": true
   }
 }
