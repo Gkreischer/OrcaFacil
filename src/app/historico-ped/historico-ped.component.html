@@ -41,13 +41,12 @@
                             <div class="control">
                               <div class="select is-small">
                                 <select formControlName="situacao" required>
-                                  <option value="">--Selecione uma opção--</option>
                                   <option [value]="lista.situacao">{{lista.situacao}}</option>
                                 </select>
                               </div>
                             </div>
                             <div class="control">
-                                <button type="button" class="button is-info is-small" (click)="exibeValor($event)" id="{{lista.id}}">Atualizar</button>
+                                <button type="button" class="button is-info is-small" (click)="atualizaSituacaoPedido($event)" id="{{lista.id}}">Atualizar</button>
                               </div>
                           </div>
                         </form>

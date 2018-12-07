@@ -23,7 +23,6 @@ export class HistoricoPedComponent implements OnInit {
   listaPedidos: listaPedidos[];
   formSituacaoPedido: FormGroup
   situacaoPedido;
-
   msg;
   load: boolean = false;
   erro: boolean = false;
@@ -38,6 +37,7 @@ export class HistoricoPedComponent implements OnInit {
       }else{
         console.log(data);
         this.listaPedidos = data;
+        
       }
       this.ocultaLoader();
     }, error => {
@@ -82,14 +82,24 @@ export class HistoricoPedComponent implements OnInit {
 
   montaForm() {
     this.formSituacaoPedido = this.fb.group({
-      situacao: ['', Validators.required]
+      situacao: ['a pagar', Validators.required]
     });
 
-    this.situacaoPedido = this.formSituacaoPedido.value;
   }
 
-  enviaForm() {
-    console.table(this.situacaoPedido);
+
+  atualizaSituacaoPedido(event) {
+    this.exibeLoader();
+    let target = event.target || event.srcElement || event.currentTarget;
+    let idAttr = target.attributes.id.value;
+
+    this.crud.atualizaRegistroEspecifico('/historicoPedidos', idAttr, this.situacaoPedido).subscribe((data) => {
+      console.log('Pedido atualizado com sucesso', data);
+      this.ocultaLoader();
+    }, error => {
+      this.erro = error;
+      this.ocultaLoader();
+    });
   }
 
   exibeValor(event) {
