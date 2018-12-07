@@ -9,11 +9,17 @@ export class UploadArquivosComponent implements OnInit {
 
   constructor() { }
 
+  arquivoParaUpload: File = null;
+
   ngOnInit() {
   }
 
-  envioArquivo() {
+  enviaArquivo(arquivo: FileList) {
     console.log('Botao upload clicado');
+
+    this.arquivoParaUpload = arquivo.item(0);
+
+    console.log('Arquivo recebido ', this.arquivoParaUpload);
   }
 
 }
