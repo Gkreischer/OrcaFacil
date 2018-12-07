@@ -56,7 +56,7 @@ export class NovoPedComponent implements OnInit {
           console.log('Id recebido da: ' + params.id);
           this.listaPecas = data.listaPecas;
           for (let i = 0; i < this.listaPecas.length; i++) {
-            this.valorTotalListaPecas = this.valorTotalListaPecas + this.listaPecas[i].valor;
+            this.valorTotalListaPecas = this.valorTotalListaPecas + (this.listaPecas[i].valor*this.listaPecas[i].quantidade);
           }
           this.ocultaLoader();
         }, error => {
@@ -129,7 +129,7 @@ export class NovoPedComponent implements OnInit {
 
       let valorPeca: number = parseFloat(this.pedido.valor);
 
-      this.valorTotalListaPecas = this.valorTotalListaPecas + valorPeca;
+      this.valorTotalListaPecas = this.valorTotalListaPecas + (valorPeca*this.pedido.quantidade);
 
       this.crud.criarRegistro('/pecasPed', this.pedido).subscribe((data) => {
         this.listaPecas.push(data);
@@ -159,7 +159,7 @@ export class NovoPedComponent implements OnInit {
       for (let i = 0; i < this.listaPecas.length; i++) {
         if (this.listaPecas[i].id === idAttr.value) {
           console.log(this.listaPecas[i].valor);
-          this.valorTotalListaPecas = this.valorTotalListaPecas - this.listaPecas[i].valor;
+          this.valorTotalListaPecas = this.valorTotalListaPecas - (this.listaPecas[i].valor*this.listaPecas[i].quantidade);
           console.log(this.valorTotalListaPecas);
           setTimeout(() => {
             this.listaPecas.splice(i, 1);
