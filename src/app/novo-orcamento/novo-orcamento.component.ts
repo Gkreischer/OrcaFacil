@@ -19,7 +19,7 @@ export class NovoOrcamentoComponent implements OnInit {
   constructor(public fb: FormBuilder, public crud: CrudService,
     public ngProgress: NgProgress, private route: ActivatedRoute) { }
 
-
+  imagemPadraoPeca: string = "/assets/images/interrogacao.jpg";
   id: string = null;
   erro;
   load: boolean = false;

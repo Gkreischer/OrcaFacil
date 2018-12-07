@@ -3,10 +3,10 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ActivatedRoute } from "@angular/router";
 import { CrudService } from './../servicos/crud.service';
 import { Peca } from './../compartilhados/peca';
-
 import { NgProgress } from 'ngx-progressbar';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
+import { UploadArquivosComponent } from './../upload-arquivos/upload-arquivos.component';
 
 @Component({
   selector: 'app-cadastropeca',

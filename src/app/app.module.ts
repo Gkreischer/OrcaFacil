@@ -21,6 +21,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ConfiguracaoComponent } from './configuracao/configuracao.component';
 import { HistoricoPedComponent } from './historico-ped/historico-ped.component';
 import { NovoOrcamentoComponent } from './novo-orcamento/novo-orcamento.component';
+import { UploadArquivosComponent } from './upload-arquivos/upload-arquivos.component';
 
 
 registerLocaleData(localePt);
@@ -34,7 +35,9 @@ registerLocaleData(localePt);
     NovoPedComponent,
     ConfiguracaoComponent,
     HistoricoPedComponent,
-    NovoOrcamentoComponent
+    NovoOrcamentoComponent,
+    UploadArquivosComponent
+
   ],
   imports: [
     BrowserModule,
