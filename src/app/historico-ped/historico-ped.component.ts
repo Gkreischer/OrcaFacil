@@ -22,7 +22,9 @@ export class HistoricoPedComponent implements OnInit {
 
   listaPedidos: listaPedidos[];
   formSituacaoPedido: FormGroup
-  situacaoPedido;
+  situacaoPedido:string[] = ['A PAGAR', 'PAGO', 'ENTREGUE' ];
+  situacaoPadrao: string = 'A PAGAR';
+  atualizacaoSitucao; 
   msg;
   load: boolean = false;
   erro: boolean = false;
@@ -37,7 +39,12 @@ export class HistoricoPedComponent implements OnInit {
       }else{
         console.log(data);
         this.listaPedidos = data;
-        
+
+        for(let i = 0 ; i < this.listaPedidos.length; i++){
+          if(this.listaPedidos[i].situacao){
+            console.log(this.listaPedidos[i].situacao);
+          }
+        }
       }
       this.ocultaLoader();
     }, error => {
@@ -85,6 +92,8 @@ export class HistoricoPedComponent implements OnInit {
       situacao: ['a pagar', Validators.required]
     });
 
+    this.formSituacaoPedido.controls['situacao'].setValue(this.situacaoPadrao, {onlySelf: true});
+
   }
 
 
@@ -93,7 +102,9 @@ export class HistoricoPedComponent implements OnInit {
     let target = event.target || event.srcElement || event.currentTarget;
     let idAttr = target.attributes.id.value;
 
-    this.crud.atualizaRegistroEspecifico('/historicoPedidos', idAttr, this.situacaoPedido).subscribe((data) => {
+    this.atualizacaoSitucao = this.formSituacaoPedido.value;
+
+    this.crud.atualizaRegistroEspecifico('/historicoPedidos', idAttr, this.atualizacaoSitucao).subscribe((data) => {
       console.log('Pedido atualizado com sucesso', data);
       this.ocultaLoader();
     }, error => {

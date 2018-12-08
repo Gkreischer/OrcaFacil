@@ -41,7 +41,7 @@
                             <div class="control">
                               <div class="select is-small">
                                 <select formControlName="situacao" required>
-                                  <option [value]="lista.situacao">{{lista.situacao}}</option>
+                                 <option selected *ngFor="let opcoes of situacaoPedido" [ngValue]="opcoes">{{opcoes}}</option>
                                 </select>
                               </div>
                             </div>
