@@ -23,6 +23,7 @@ export class CadastropecaComponent implements OnInit {
   formCategoria: FormGroup;
   peca: Observable<Peca>;
   categorias;
+  arquivoUpload: File;
 
   erro;
   modal: boolean = false;
@@ -125,8 +126,9 @@ export class CadastropecaComponent implements OnInit {
     });
   }
 
-  feedbackComponenteUpload(resposta){
-    console.log('Imagem recebida do filho', resposta);
+  uploadArquivo(arquivo: FileList){
+    this.arquivoUpload = arquivo.item(0);
+    console.log('Arquivo recebido: ', this.arquivoUpload );
   }
 
   // Controles de interface

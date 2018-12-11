@@ -12,7 +12,6 @@ export class UploadArquivosComponent implements OnInit {
 
   arquivoParaUpload = null;
 
-
   ngOnInit() {
   }
 
@@ -23,10 +22,6 @@ export class UploadArquivosComponent implements OnInit {
 
     console.log('Arquivo recebido no componente filho', this.arquivoParaUpload);
   }
+  
 
-  feedback(arquivo: FileList) {
-    this.arquivoParaUpload = arquivo.item(0);
-
-    console.log('Resposta para o componente pai ', this.arquivoParaUpload);
-  }
 }
