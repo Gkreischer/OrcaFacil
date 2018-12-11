@@ -66,14 +66,22 @@
               <div class="columns">
                 <div *ngFor="let pecaSelecionada of listaPecasOrcamento" class="column is-one-quarter">
                   <div class="card">
+                    <header class="card-header">
+                        <p class="card-header-title is-uppercase">{{pecaSelecionada.categoria}}</p>
+                      <a (click)="removePecaListaOrcamento($event)" id="{{pecaSelecionada.id}}" class="card-header-icon" aria-label="more options">
+                        <span class="icon">
+                            <i class="fas fa-times" id="{{pecaSelecionada.id}}" aria-hidden="true"></i>
+                        </span>
+                      </a>
+                    </header>
                     <div class="card-image">
                       <figure class="image is-4by3">
-                        <img src="{{imagemPadraoPeca}}" alt="Placeholder image">
+                        <img src="http://localhost:3000/api/containers/images/download/679e021f-b212-400d-b0a6-b8cdb5524d85.jpg">
                       </figure>
                     </div>
                     <div class="card-content">
                       <div class="content">
-                        <p class="is-uppercase">{{pecaSelecionada.categoria}}</p>
+
                         <p class="has-text-weight-bold">{{pecaSelecionada.nome}}</p>
                         <p class="has-text-weight-bold">Valor: {{pecaSelecionada.valor}}</p>
                       </div>

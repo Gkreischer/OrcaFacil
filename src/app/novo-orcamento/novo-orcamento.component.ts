@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from "@angular/router";
 import { CrudService } from './../servicos/crud.service';
@@ -17,7 +17,8 @@ import { Peca } from './../compartilhados/peca';
 export class NovoOrcamentoComponent implements OnInit {
 
   constructor(public fb: FormBuilder, public crud: CrudService,
-    public ngProgress: NgProgress, private route: ActivatedRoute) { }
+    public ngProgress: NgProgress, private route: ActivatedRoute,
+    public cd: ChangeDetectorRef) { }
 
   imagemPadraoPeca: string = "/assets/images/interrogacao.jpg";
   id: string = null;
@@ -30,6 +31,8 @@ export class NovoOrcamentoComponent implements OnInit {
   listaPecas: Peca[] = null;
   pecaSelecionada: Peca;
   listaPecasOrcamento: Peca[] = [];
+
+  differ: any
   
   ngOnInit() {
     this.leCategorias();
@@ -85,6 +88,29 @@ export class NovoOrcamentoComponent implements OnInit {
     }, error => {
       this.erro = error;
     });
+  }
+
+  removePecaListaOrcamento(event) {
+    console.log('Removendo peça');
+
+    let target = event.target || event.srcElement || event.currentTarget;
+    let idAttr = target.attributes.id.value;
+
+    let confirma = window.confirm('Tem certeza que deseja remover a peça do orçamento?');
+
+
+    if(confirma){
+      
+      for(let i = 0; i < this.listaPecas.length ; i++){
+        if(this.listaPecas[i].id === idAttr){
+          setTimeout(() => {
+            this.listaPecasOrcamento.splice(i,1);
+            console.log(this.listaPecas);
+          });
+        }
+      }
+      
+    }
   }
 
   resetaCategorias() {

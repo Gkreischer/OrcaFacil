@@ -66,6 +66,7 @@ export class CadastropecaComponent implements OnInit {
       fornecedor: ['', Validators.required],
       fabricante: ['', Validators.required],
       quantidade: ['', Validators.required],
+      imagem: ['', Validators.required],
       valor: ['', Validators.required]
     });
 
@@ -122,6 +123,10 @@ export class CadastropecaComponent implements OnInit {
       this.ocultaLoader();
       this.abreModal(false);
     });
+  }
+
+  feedbackComponenteUpload(resposta){
+    console.log('Imagem recebida do filho', resposta);
   }
 
   // Controles de interface

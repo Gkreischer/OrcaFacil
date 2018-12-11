@@ -1,0 +1,26 @@
+{
+  "name": "orcamentos",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "mixins": {
+    "TimeStamp": true
+  },
+  "properties": {
+    "nomeCliente": {
+      "type": "string"
+    },
+    "pecas": {
+      "type": [
+        "object"
+      ],
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

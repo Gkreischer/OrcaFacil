@@ -63,5 +63,9 @@
   "container": {
     "dataSource": "storage",
     "public": true
+  },
+  "orcamentos": {
+    "dataSource": "MongoDB",
+    "public": true
   }
 }

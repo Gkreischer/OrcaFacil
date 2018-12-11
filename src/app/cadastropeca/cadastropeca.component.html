@@ -58,7 +58,7 @@
             <div class="field">
               <label class="label">Imagem</label>
               <div class="control">
-                <app-upload-arquivos></app-upload-arquivos>
+                <app-upload-arquivos (respostaComponenteFilho)="feedbackComponenteUpload($event)" formControlName="imagem"></app-upload-arquivos>
               </div>
             </div>
           </div>

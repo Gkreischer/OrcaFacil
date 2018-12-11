@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
+import { EventEmitter } from 'events';
 
 @Component({
   selector: 'app-upload-arquivos',
@@ -9,7 +10,8 @@ export class UploadArquivosComponent implements OnInit {
 
   constructor() { }
 
-  arquivoParaUpload: File = null;
+  arquivoParaUpload = null;
+
 
   ngOnInit() {
   }
@@ -19,7 +21,12 @@ export class UploadArquivosComponent implements OnInit {
 
     this.arquivoParaUpload = arquivo.item(0);
 
-    console.log('Arquivo recebido ', this.arquivoParaUpload);
+    console.log('Arquivo recebido no componente filho', this.arquivoParaUpload);
   }
 
+  feedback(arquivo: FileList) {
+    this.arquivoParaUpload = arquivo.item(0);
+
+    console.log('Resposta para o componente pai ', this.arquivoParaUpload);
+  }
 }
