@@ -24,6 +24,10 @@
     "valor": {
       "type": "number",
       "required": true
+    },
+    "imagem": {
+      "type": "string",
+      "required": "false"
     }
   },
   "validations": [],

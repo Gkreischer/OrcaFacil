@@ -23,7 +23,7 @@ export class CadastropecaComponent implements OnInit {
   formCategoria: FormGroup;
   peca: Observable<Peca>;
   categorias;
-  arquivoUpload: File;
+  arquivoUpload: File = null;
 
   erro;
   modal: boolean = false;
@@ -36,12 +36,12 @@ export class CadastropecaComponent implements OnInit {
     this.montaForm();
   }
 
-  pegaIdRota(){
+  pegaIdRota() {
     this.exibeLoader();
     this.route.params.subscribe((params) => {
       this.id = params.id;
       this.ocultaLoader();
-      if(this.id != undefined){
+      if (this.id != undefined) {
         this.exibeLoader();
         this.crud.lerRegistroEspecifico('/pecas', this.id).subscribe((data) => {
           console.log('Id recebido da: ' + params.id);
@@ -50,15 +50,15 @@ export class CadastropecaComponent implements OnInit {
           console.log(data);
           this.ocultaLoader();
         }, error => {
-          this.erro = error, 
-          this.ocultaLoader();
+          this.erro = error,
+            this.ocultaLoader();
         });
-      }else {
+      } else {
         this.montaForm();
       }
     });
   }
-  
+
   // Formulário
   montaForm() {
     this.formPeca = this.fb.group({
@@ -67,7 +67,7 @@ export class CadastropecaComponent implements OnInit {
       fornecedor: ['', Validators.required],
       fabricante: ['', Validators.required],
       quantidade: ['', Validators.required],
-      imagem: ['', Validators.required],
+      imagem: '',
       valor: ['', Validators.required]
     });
 
@@ -82,15 +82,16 @@ export class CadastropecaComponent implements OnInit {
     this.exibeLoader();
 
     this.peca = this.formPeca.value;
-    if(this.id != undefined){
+    console.table(this.peca);
+    if (this.id != undefined) {
       this.crud.atualizaRegistroEspecifico('/pecas', this.id, this.peca).subscribe((data) => {
-      this.ocultaLoader();
-      this.msg = 'Peça atualizada com sucesso';
+        this.ocultaLoader();
+        this.msg = 'Peça atualizada com sucesso';
       }, error => {
         this.erro = error;
         this.ocultaLoader();
       });
-    }else {
+    } else {
       this.crud.criarRegistro('/pecas', this.peca).subscribe((data) => {
         this.ocultaLoader();
         this.msg = 'Peça criada com sucesso.';
@@ -100,8 +101,8 @@ export class CadastropecaComponent implements OnInit {
       });
     }
   }
-  
-  leCategorias(){
+
+  leCategorias() {
     this.exibeLoader();
     this.crud.lerRegistro('/categorias').subscribe((categorias) => {
       this.categorias = categorias;
@@ -116,7 +117,7 @@ export class CadastropecaComponent implements OnInit {
     this.exibeLoader();
     this.crud.criarRegistro('/categorias', this.formCategoria.value).subscribe((data) => {
       console.log('Categoria adicionada globalmente');
-      this.categorias.push(this.formCategoria.value);      
+      this.categorias.push(this.formCategoria.value);
       this.ocultaLoader();
       this.abreModal(false);
     }, error => {
@@ -126,14 +127,27 @@ export class CadastropecaComponent implements OnInit {
     });
   }
 
-  uploadArquivo(arquivo: FileList){
-    this.arquivoUpload = arquivo.item(0);
-    console.log('Arquivo recebido: ', this.arquivoUpload );
+  upload(){
+
+    const fd = new FormData();
+    fd.append('image', this.arquivoUpload, this.arquivoUpload.name);
+
+    this.crud.criarRegistro('/containers/images/upload', fd).subscribe((data) => {
+      console.log('Arquivo enviado com sucesso', data);
+    }, error => {
+      this.erro = error;
+    });
+  }
+
+  arquivoSelecionado(event) {
+    this.arquivoUpload = <File>event.target.files[0];
+
+    console.log('Arquivo recebido', this.arquivoUpload);
   }
 
   // Controles de interface
   abreModal(op: boolean) {
-    if(op){
+    if (op) {
       this.modal = true;
       console.log('Modal abrindo');
     } else {
@@ -141,7 +155,7 @@ export class CadastropecaComponent implements OnInit {
       console.log('Modal fechando');
     }
   }
-  
+
   fechaAviso() {
     this.erro = null;
     this.msg = null;

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse} from  '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders} from  '@angular/common/http';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { catchError, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
@@ -47,6 +47,13 @@ export class CrudService {
   procuraPeca(categoria): Observable<Peca[]> {
     return this.http.get<any[]>(this.API_URL + '/pecas?filter[where][categoria]=' + categoria).pipe(
       tap((data) => {return data}),
+      catchError(this.handleError)
+    );
+  }
+
+  enviaImagem(form): Observable<any>{
+    const headers = new HttpHeaders({'Content-Type':'application/json; charset=utf-8'});
+    return this.http.post(this.API_URL + '/containers/images/upload', form, {headers: headers}).pipe(
       catchError(this.handleError)
     );
   }
