@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import * as pdfmake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { catchError } from 'rxjs/operators';
-import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
@@ -18,7 +17,7 @@ export class ImpressaoService {
   API_URL: string = 'http://localhost:3000/api';
   dadosEmpresa;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient) {
     this.atribuiInfoEmpresaDocPDF();
   }
 
@@ -27,7 +26,6 @@ export class ImpressaoService {
       this.dadosEmpresa = data[0];
       if (this.dadosEmpresa == undefined) {
         alert('Cadastre suas informações primeiro em Configurações');
-        this.router.navigate(['/configuracao']);
       }
       console.log('Dados da empresa recebidos:', this.dadosEmpresa);
     })
