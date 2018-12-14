@@ -24,6 +24,9 @@ export class CadastropecaComponent implements OnInit {
   peca: Observable<Peca>;
   categorias;
   arquivoUpload: File = null;
+  caminhoParaUpload: string = 'http://localhost:3000/api/containers/images/upload';
+  nomeArquivoUpload: string = null;
+
 
   erro;
   modal: boolean = false;
@@ -87,6 +90,7 @@ export class CadastropecaComponent implements OnInit {
       this.crud.atualizaRegistroEspecifico('/pecas', this.id, this.peca).subscribe((data) => {
         this.ocultaLoader();
         this.msg = 'Peça atualizada com sucesso';
+        
       }, error => {
         this.erro = error;
         this.ocultaLoader();
@@ -127,22 +131,27 @@ export class CadastropecaComponent implements OnInit {
     });
   }
 
-  upload(){
+  upload(event) {
 
-    const fd = new FormData();
-    fd.append('image', this.arquivoUpload, this.arquivoUpload.name);
-
-    this.crud.criarRegistro('/containers/images/upload', fd).subscribe((data) => {
-      console.log('Arquivo enviado com sucesso', data);
-    }, error => {
-      this.erro = error;
-    });
-  }
-
-  arquivoSelecionado(event) {
     this.arquivoUpload = <File>event.target.files[0];
 
     console.log('Arquivo recebido', this.arquivoUpload);
+    
+
+    if (this.arquivoUpload.name === null) {
+
+    } else {
+      const fd = new FormData();
+      fd.append('image', this.arquivoUpload, this.arquivoUpload.name);
+
+      this.crud.criarRegistro('/containers/images/upload', fd).subscribe((data) => {
+        console.log('Arquivo enviado com sucesso', data);
+        console.log('Nome do arquivo: ', data.result.files.image[0].name);
+        this.nomeArquivoUpload = data.result.files.image[0].name;
+      }, error => {
+        this.erro = error;
+      });
+    }
   }
 
   // Controles de interface
