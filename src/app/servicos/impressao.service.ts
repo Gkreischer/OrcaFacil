@@ -7,6 +7,7 @@ import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 import { InfoEmpresa } from './../compartilhados/infoEmpresa';
 import { Observable } from 'rxjs/Observable';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class ImpressaoService {
@@ -17,7 +18,7 @@ export class ImpressaoService {
   API_URL: string = 'http://localhost:3000/api';
   dadosEmpresa;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     this.atribuiInfoEmpresaDocPDF();
   }
 
@@ -26,6 +27,8 @@ export class ImpressaoService {
       this.dadosEmpresa = data[0];
       if (this.dadosEmpresa == undefined) {
         alert('Cadastre suas informações primeiro em Configurações');
+        this.router.navigate(['/configuracao']);
+
       }
       console.log('Dados da empresa recebidos:', this.dadosEmpresa);
     })
